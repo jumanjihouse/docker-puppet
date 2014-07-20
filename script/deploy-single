@@ -1,0 +1,5 @@
+#!/bin/bash
+
+script/deploy-named
+script/deploy-db
+script/deploy-master

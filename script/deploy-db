@@ -1,0 +1,30 @@
+#!/bin/bash
+
+source script/functions
+
+# Do setup.
+script/bootstrap
+
+# Download prebuilt images.
+smitty docker pull jumanjiman/puppetdb
+smitty docker pull jumanjiman/puppetboard
+
+# Install systemd unit files.
+if onsite; then
+  smitty sudo cp systemd/puppet{db,board}.service /etc/systemd/system/
+else
+  smitty sudo cp systemd/test/puppet{db,board}.service /etc/systemd/system/
+fi
+smitty sudo systemctl daemon-reload
+
+# Run the containers.
+smitty sudo systemctl enable puppetdb.service
+smitty sudo systemctl start puppetdb.service
+smitty sudo systemctl enable puppetboard.service
+smitty sudo systemctl start puppetboard.service
+
+say Sleep 60 seconds for puppetdb to become ready.
+#
+# It can actually take up to 2 minutes for puppetdb to fully start.
+for x in $(seq 1 60); do echo -n "."; sleep 1; done
+echo

@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+set -e
+
+source script/functions
+
+say Start dns server so we can refer to test containers by name.
+#
+# Note: You must bind the DNS port to the management IP to avoid client error:
+# ;; reply from unexpected source: yyy.yyy.yyy.yyy#53, expected xxx.xxx.xxx.xxx#53
+#
+mgmt_ip=$(ip route get 8.8.8.8 | awk '/src/ {print $NF}')
+docker run -d \
+  --name named-test \
+  -p ${mgmt_ip}:53:53 -p ${mgmt_ip}:53:53/udp \
+  -e FACTER_public_ipaddress=${mgmt_ip} \
+  jumanjiman/named
+
+say Start the test containers.
+#
+# For each container, use the DNS server we started above for name resolution.
+#
+docker run -d \
+  --name db-test \
+  -p 8080:8080 -p 8081:8081 \
+  --dns=${mgmt_ip} \
+  --hostname=puppetdb.inf.ise.com \
+  jumanjiman/puppetdb
+
+docker run -d \
+  --name master-test \
+  -p 8140:8140 \
+  --dns=${mgmt_ip} \
+  --hostname=puppet.inf.ise.com \
+  -v $(pwd)/spec/fixtures:/opt/puppet/environments \
+  jumanjiman/puppetmaster
+
+docker run -d \
+  --name board-test \
+  -p 80:80 \
+  --dns=${mgmt_ip} \
+  --hostname=puppetboard.inf.ise.com \
+  jumanjiman/puppetboard
+
+say Sleep 60 seconds for puppetdb to become ready.
+#
+# It can actually take up to 2 minutes for puppetdb to fully start.
+for x in $(seq 1 60); do echo -n "."; sleep 1; done
+echo
+
+say Run puppet agent against master.
+#
+# Do not use `-i' or else docker waits on stdin and
+# does not exit until you press a key.
+#
+hostname=foo.example.com
+cmd='puppet agent -t --server=puppet.inf.ise.com'
+out=/tmp/docker.out
+#
+docker run --rm -t --dns=${mgmt_ip} --hostname=$hostname jumanjiman/puppetagent $cmd | tee -a $out
+
+say Query puppetboard for the node.
+#
+cmd="elinks -dump http://puppetboard.inf.ise.com/node/$hostname"
+docker run --rm -t --dns=${mgmt_ip} --hostname=$hostname jumanjiman/puppetagent $cmd | tee -a $out
+
+say Did we find the host in puppetboard?
+#
+# Fail if we don't find our fqdn in the output.
+#
+grep "http://puppetboard.inf.ise.com/fact/fqdn/$hostname" $out && echo 'yes'
