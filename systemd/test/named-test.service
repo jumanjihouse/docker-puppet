@@ -1,0 +1,24 @@
+[Unit]
+Description=ISC BIND for puppet test
+After=docker.service
+Requires=docker.service
+
+[Service]
+EnvironmentFile=/etc/named-test.env
+ExecStartPre=/bin/bash -c '/usr/bin/docker inspect %n &> /dev/null && /usr/bin/docker rm %n || :'
+#
+# Note: Bind the DNS port to the management IP to avoid client error:
+# ;; reply from unexpected source: yyy.yyy.yyy.yyy#53, expected xxx.xxx.xxx.xxx#53
+#
+ExecStart=/usr/bin/docker run \
+    --name %n \
+    -p ${mgmt_ip}:53:53 \
+    -p ${mgmt_ip}:53:53/udp \
+    -e FACTER_public_ipaddress=${mgmt_ip} \
+    jumanjiman/named
+ExecStop=/usr/bin/docker stop %n
+RestartSec=5s
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

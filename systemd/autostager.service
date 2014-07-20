@@ -1,0 +1,23 @@
+[Unit]
+Description=puppet autostager
+After=docker.service
+Requires=docker.service
+
+[Service]
+EnvironmentFile=-/etc/autostager.env
+ExecStartPre=/bin/bash -c '/usr/bin/docker inspect autostager.data &> /dev/null || /usr/bin/docker run --name autostager.data -v /opt/puppet/environments busybox /bin/true'
+ExecStartPre=/bin/bash -c '/usr/bin/docker inspect %n &> /dev/null && /usr/bin/docker rm %n || :'
+ExecStart=/usr/bin/docker run \
+  --name %n \
+  --hostname puppet.inf.ise.com \
+  -t \
+  -e access_token=${access_token} \
+  -e repo_slug=${repo_slug} \
+  --volumes-from autostager.data \
+  jumanjiman/autostager
+ExecStop=/usr/bin/docker stop %n
+RestartSec=5s
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

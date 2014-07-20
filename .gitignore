@@ -1,2 +1,12 @@
 *~
 *.swp
+data
+backup*
+*.tar
+.bundle/
+Gemfile.lock
+jq
+keys
+puppetboard/ssl/
+puppetdb/ssl/
+puppetmaster/ssl/

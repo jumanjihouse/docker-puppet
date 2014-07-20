@@ -1,0 +1,25 @@
+smitty() {
+  echo; echo
+  echo -e "[INFO] $@"
+  "$@"
+}
+
+err() {
+  echo "[ERROR] $@" >&2
+  exit 1
+}
+
+say() {
+  echo
+  echo '===>' $@
+}
+
+onsite() {
+  if ping -c2 -W2 proxy.inf.ise.com; then
+    /bin/true
+  else
+    /bin/false
+  fi
+}
+
+mgmt_ip=$(ip route get 8.8.8.8 | awk '/src/ {print $NF}')

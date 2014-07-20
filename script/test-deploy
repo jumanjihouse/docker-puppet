@@ -1,0 +1,22 @@
+#!/bin/bash
+set -e
+
+source script/functions
+
+say Run puppet agent.
+#
+smitty docker run \
+  --rm \
+  --dns=${mgmt_ip} \
+  --hostname=blah.example.com \
+  jumanjiman/puppetagent \
+  puppet agent -t --server=puppet.inf.ise.com
+
+say Check for host in puppetboard.
+#
+smitty docker run \
+  --rm \
+  --dns=${mgmt_ip} \
+  --hostname=blah.example.com \
+  jumanjiman/puppetagent \
+  elinks -dump http://puppetboard.inf.ise.com/puppetboard/

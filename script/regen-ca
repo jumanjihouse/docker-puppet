@@ -1,0 +1,76 @@
+#!/bin/bash
+set -e
+
+source script/functions
+
+say Ensure we have name resolution.
+#
+smitty script/deploy-named
+
+say Create empty data container for /var/lib/puppet/ssl.
+#
+smitty docker rm castage-data || :
+smitty docker run --name castage-data -v /var/lib/puppet/ssl busybox /bin/true
+
+say Ensure master is not running.
+#
+smitty docker stop master || :
+smitty docker rm master || :
+
+say Create puppet ca inside data container.
+#
+smitty docker run \
+  --rm \
+  --dns=${mgmt_ip} \
+  --hostname=puppetmaster.inf.ise.com \
+  -v $(pwd)/spec/fixtures:/opt/puppet/environments \
+  --volumes-from=castage-data \
+  jumanjiman/puppetmaster \
+  puppet cert --generate puppet.inf.ise.com
+
+say Start the puppet master.
+#
+smitty docker run -d \
+  --dns=${mgmt_ip} \
+  --name=master \
+  --hostname=puppetmaster.inf.ise.com \
+  -v $(pwd)/spec/fixtures:/opt/puppet/environments \
+  --volumes-from=castage-data \
+  -p 8140:8140 \
+  jumanjiman/puppetmaster
+
+say Get a puppetdb agent cert and set up /etc/puppetdb/ssl.
+#
+smitty docker run \
+  --rm \
+  --dns=${mgmt_ip} \
+  --hostname=puppetdb.inf.ise.com \
+  --volumes-from=castage-data \
+  jumanjiman/puppetdb \
+  /bin/bash -c "\
+    rm -fr /etc/puppetdb/ssl; \
+    puppet agent -t --server=puppet.inf.ise.com; \
+    puppetdb ssl-setup; \
+  "
+
+say Get a puppetboard agent cert.
+#
+smitty docker run \
+  --rm \
+  --dns=${mgmt_ip} \
+  --hostname=puppetboard.inf.ise.com \
+  --volumes-from=castage-data \
+  jumanjiman/puppetboard \
+  puppet agent -t --server=puppet.inf.ise.com
+
+say Stop and remove master.
+#
+smitty docker stop master
+smitty docker rm master
+
+say Copy ssl dir from data container into repo.
+#
+smitty rm -fr ssl
+#docker run --rm --volumes-from castage-data -v $(pwd):/ssl busybox tar -C /var/lib/puppet -cvf /backup/castage-data.tar ssl
+smitty docker run --rm --volumes-from castage-data -v $(pwd)/ssl:/ssl busybox cp -r /var/lib/puppet/ssl /
+smitty sudo chown -R core ssl

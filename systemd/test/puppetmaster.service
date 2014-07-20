@@ -1,0 +1,22 @@
+[Unit]
+Description=puppetmaster
+After=autostager.service
+Requires=autostager.service
+
+[Service]
+EnvironmentFile=/etc/named-test.env
+ExecStartPre=/bin/bash -c '/usr/bin/docker inspect %n &> /dev/null && /usr/bin/docker rm %n || :'
+ExecStart=/usr/bin/docker run \
+  --name %n \
+  --hostname puppet.inf.ise.com \
+  --dns ${mgmt_ip} \
+  -p 8140:8140 \
+  --volumes-from autostager.data \
+  --volumes-from puppetca \
+  jumanjiman/puppetmaster
+ExecStop=/usr/bin/docker stop %n
+RestartSec=5s
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

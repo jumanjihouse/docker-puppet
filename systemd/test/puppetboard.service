@@ -1,0 +1,20 @@
+[Unit]
+Description=PuppetBoard web GUI
+After=docker.service
+Requires=docker.service
+
+[Service]
+EnvironmentFile=/etc/named-test.env
+ExecStartPre=/bin/bash -c '/usr/bin/docker inspect puppetboard &> /dev/null && /usr/bin/docker rm puppetboard || :'
+ExecStart=/usr/bin/docker run \
+  --name puppetboard \
+  --dns ${mgmt_ip} \
+  --hostname puppetboard.inf.ise.com \
+  -p 80:80 \
+  jumanjiman/puppetboard
+ExecStop=/usr/bin/docker stop puppetboard
+RestartSec=5s
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

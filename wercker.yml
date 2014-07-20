@@ -1,0 +1,30 @@
+box: wercker-labs/docker
+build:
+  steps:
+    - script:
+        name: print the docker version
+        code: docker version
+    - script:
+        name: print system-wide docker info
+        code: docker info
+    - script:
+        name: remove existing containers if necessary
+        code: script/00_build_start.sh
+    - script:
+        name: build puppet agent base image
+        code: script/01_build_puppetagent.sh
+    - script:
+        name: build dns server
+        code: script/05_build_named.sh
+    - script:
+        name: build puppetdb
+        code: script/10_build_puppetdb.sh
+    - script:
+        name: build puppetmaster
+        code: script/10_build_puppetmaster.sh
+    - script:
+        name: build puppetboard
+        code: script/15_build_puppetboard.sh
+    - script:
+        name: run the test suite
+        code: script/test

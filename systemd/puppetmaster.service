@@ -1,0 +1,20 @@
+[Unit]
+Description=puppetmaster
+After=autostager.service
+Requires=autostager.service
+
+[Service]
+ExecStartPre=/bin/bash -c '/usr/bin/docker inspect %n &> /dev/null && /usr/bin/docker rm %n || :'
+ExecStart=/usr/bin/docker run \
+  --name %n \
+  --hostname puppet.inf.ise.com \
+  -p 8140:8140 \
+  --volumes-from puppetca \
+  --volumes-from autostager.data \
+  jumanjiman/puppetmaster
+ExecStop=/usr/bin/docker stop %n
+RestartSec=5s
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

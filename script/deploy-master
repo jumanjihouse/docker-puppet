@@ -1,0 +1,33 @@
+#!/bin/bash
+set -e
+
+source script/functions
+
+# Do setup.
+script/bootstrap
+
+# Download prebuilt images.
+smitty docker pull jumanjiman/puppetmaster
+smitty docker pull jumanjiman/autostager
+
+# Create local puppetca container.
+# This container persists locally independently from puppetmaster.
+smitty docker rm puppetca || :
+smitty docker run --name puppetca -v /var/lib/puppet/ssl jumanjiman/puppetmaster /bin/true
+
+# Install systemd unit files.
+if onsite; then
+  smitty sudo cp systemd/puppetmaster.service /etc/systemd/system/
+else
+  smitty sudo cp systemd/test/puppetmaster.service /etc/systemd/system/
+fi
+smitty sudo cp systemd/autostager.service /etc/systemd/system/
+smitty sudo systemctl daemon-reload
+
+# Run the autostager.
+smitty sudo systemctl enable autostager.service
+smitty sudo systemctl start autostager.service
+
+# Run the master.
+smitty sudo systemctl enable puppetmaster.service
+smitty sudo systemctl start puppetmaster.service

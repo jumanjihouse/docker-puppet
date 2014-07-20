@@ -1,0 +1,30 @@
+#!/bin/bash
+set -e
+set -o noclobber
+
+source script/functions
+
+# Note: Bind the DNS port to the management IP to avoid client error:
+# ;; reply from unexpected source: yyy.yyy.yyy.yyy#53, expected xxx.xxx.xxx.xxx#53
+#
+if ! grep $mgmt_ip /etc/named-test.env &> /dev/null; then
+  sudo rm -f /etc/named-test.env
+  echo "mgmt_ip=${mgmt_ip}" | sudo tee /etc/named-test.env
+fi
+
+if sudo systemctl is-active -q named-test.service; then
+  netstat -uln | grep ${mgmt_ip}:53 &> /dev/null || smitty sudo systemctl restart named-test.service
+else
+  smitty sudo cp systemd/test/named-test.service /etc/systemd/system/
+  smitty sudo systemctl daemon-reload
+  smitty sudo systemctl enable named-test.service
+  smitty sudo systemctl start named-test.service
+fi
+
+# Fail if service is not active.
+sudo systemctl is-active -q named-test.service
+
+# Fail if 53 is bound to wrong ip.
+netstat -uln | grep ${mgmt_ip}:53 &> /dev/null
+
+say OK
