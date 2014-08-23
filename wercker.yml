@@ -1,6 +1,8 @@
 box: wercker-labs/docker
 build:
   steps:
+    - install-packages:
+        packages: lxc-docker=1.2.0
     - script:
         name: print the docker version
         code: docker version
