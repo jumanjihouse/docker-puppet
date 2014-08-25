@@ -28,6 +28,12 @@ smitty sudo systemctl daemon-reload
 smitty sudo systemctl enable autostager.service
 smitty sudo systemctl start autostager.service
 
+say Sleep 60 seconds for autostager to populate production env.
+#
+for x in $(seq 1 60); do echo -n "."; sleep 1; done
+echo
+
+
 # Run the master.
 smitty sudo systemctl enable puppetmaster.service
 smitty sudo systemctl start puppetmaster.service
