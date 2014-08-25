@@ -1,7 +1,7 @@
 [Unit]
 Description=puppetmaster
-After=autostager.service
-Requires=autostager.service
+After=docker.service
+Requires=docker.service
 
 [Service]
 ExecStartPre=/bin/bash -c '/usr/bin/docker inspect %n &> /dev/null && /usr/bin/docker rm %n || :'

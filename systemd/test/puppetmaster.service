@@ -1,7 +1,7 @@
 [Unit]
 Description=puppetmaster
-After=autostager.service
-Requires=autostager.service
+After=docker.service
+Requires=docker.service
 
 [Service]
 EnvironmentFile=/etc/named-test.env
