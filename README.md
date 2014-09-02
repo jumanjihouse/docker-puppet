@@ -217,6 +217,13 @@ You can run tests **locally** via:
 
     script/build.sh && script/test
 
+Trigger a rebuild-and-test cycle to get latest package updates:
+
+    date > REBUILD
+    git add REBUILD
+    git commit -m 'build with latest package updates'
+    # Open pull request.
+
 
 License
 -------
