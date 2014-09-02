@@ -1,0 +1,3 @@
+# https://docs.docker.com/reference/builder/#the-dockerignore-file
+.git
+*/.git
