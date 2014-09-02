@@ -30,3 +30,19 @@ build:
     - script:
         name: run the test suite
         code: script/test
+    - script:
+        name: scan puppetagent for vulnerabilities
+        code: |
+          docker run --rm -t jumanjiman/puppetagent  /oval/vulnerability-scan.sh || :
+    - script:
+        name: scan puppetboard for vulnerabilities
+        code: |
+          docker run --rm -t jumanjiman/puppetboard  /oval/vulnerability-scan.sh || :
+    - script:
+        name: scan puppetdb for vulnerabilities
+        code: |
+          docker run --rm -t jumanjiman/puppetdb     /oval/vulnerability-scan.sh || :
+    - script:
+        name: scan puppetmaster for vulnerabilities
+        code: |
+          docker run --rm -t jumanjiman/puppetmaster /oval/vulnerability-scan.sh || :

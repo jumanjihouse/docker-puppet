@@ -80,67 +80,12 @@ sudo nsenter --target $PID --mount --uts --ipc --net --pid
 OVAL vulnerability scan
 -----------------------
 
-The Red Hat Security Response Team provides OVAL definitions
-for all vulnerabilities (identified by CVE name) that affect RHEL.
-This enables users to perform a vulnerability scan and
-diagnose whether the system is vulnerable.
+The wercker test harness runs a vulnerability scan.
+You can also perform the scan inside a running container via:
 
-The puppetagent Dockerfile adds a script to download the latest
-OVAL definitions from Red Hat and perform a vulnerability scan
-against the image. If the image has one or more known vulnerabilies,
-the script exits non-zero, and the `docker build` fails.
+    /oval/vulnerability-scan.sh
 
-Implications:
-
-* We **must resolve all known vulnerabilities**
-  in order to successfully build an image.
-
-* The scan is time-dependent as of image build, so
-  we should rebuild the image when Red Hat updates the OVAL feed.
-
-* The vulnerability scan is distinct from the *SCAP secure configuration scan*.
-
-It is possible to scan an existing image:
-
-    docker run --rm -t jumanjiman/puppetagent /files/oval-vulnerability-scan.sh
-
-The exact output of the vulnerability scan varies according to the
-latest Red Hat OVAL feed, but it looks similar to this snapshot from August 2014:
-
-    -snip copious checks-
-
-    RHSA-2014:1051: flash-plugin security update (Critical)
-    oval-com.redhat.rhsa-def-20141051
-    CVE-2014-0538
-    CVE-2014-0540
-    CVE-2014-0541
-    CVE-2014-0542
-    CVE-2014-0543
-    CVE-2014-0544
-    CVE-2014-0545
-    pass
-
-    RHSA-2014:1052: openssl security update (Moderate)
-    oval-com.redhat.rhsa-def-20141052
-    CVE-2014-3505
-    CVE-2014-3506
-    CVE-2014-3507
-    CVE-2014-3508
-    CVE-2014-3509
-    CVE-2014-3510
-    CVE-2014-3511
-    pass
-
-    RHSA-2014:1053: openssl security update (Moderate)
-    oval-com.redhat.rhsa-def-20141053
-    CVE-2014-0221
-    CVE-2014-3505
-    CVE-2014-3506
-    CVE-2014-3508
-    CVE-2014-3510
-    pass
-
-    vulnerability scan exit status 0
+See https://github.com/jumanjihouse/oval for details.
 
 TODO: Implement some sort of CD system to poll the OVAL feed and rebuild
 the image on any update. https://github.com/jumanjiman/docker-gocd may be
@@ -184,6 +129,7 @@ a [topic branch](http://progit.org/book/ch3-4.html) of your fork.
 1. Bootstrap your dev environment
 
    ```bash
+   git submodule update --init --recursive
    git remote add upstream https://github.com/jumanjihouse/docker-puppet.git
    ```
 
