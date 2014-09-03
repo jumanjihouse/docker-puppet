@@ -46,8 +46,3 @@ build:
         name: scan puppetmaster for vulnerabilities
         code: |
           docker run --rm -t jumanjiman/puppetmaster /oval/vulnerability-scan.sh || :
-deploy:
-  steps:
-    - script:
-        name: push images to docker hub (master branch only)
-        code: script/release
