@@ -1,0 +1,36 @@
+#!/bin/bash
+set -e
+#
+# Push images to the docker hub.
+#
+usage() {
+  echo "Usage:"
+  echo "  script/release"
+  echo
+  echo "Environment variables must be set to login to docker.io:"
+  echo "  EMAIL"
+  echo "  USERNAME"
+  echo "  PASSWORD"
+}
+
+# Environment variables defined in the job at wercker.com.
+email=${EMAIL}
+username=${USERNAME}
+password=${PASSWORD}
+
+images="
+puppetagent
+puppetboard
+puppetdb
+puppetmaster
+"
+
+if [[ -z $email || -z $username || -z $password ]]; then
+  usage
+  exit 1
+fi
+
+docker login -e $email -u $username -p $password
+for img in $images; do
+  docker push jumanjiman/$img
+done
