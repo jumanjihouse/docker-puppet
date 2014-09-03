@@ -4,11 +4,11 @@ build:
     - install-packages:
         packages: lxc-docker=1.2.0
     - script:
-        name: print the docker version
-        code: docker version
-    - script:
         name: print system-wide docker info
-        code: docker info
+        code: |
+          docker version
+          docker info
+          docker images
     - script:
         name: remove existing containers if necessary
         code: script/00_build_start.sh
