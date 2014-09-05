@@ -9,6 +9,24 @@ package { 'rsyslog':
 
 $cname = 'puppetdb.inf.ise.com'
 
+# Merge these java args into the args that live in
+# /etc/sysconfig/puppetdb.
+#
+# This replaces individual args, so we don't have
+# to specify the complete set.
+#
+# If you leave this empty, you get the default set.
+# If you add one item, it either clobbers the default item of same name
+# or gets added into the set with /etc/sysconfig/puppetdb.
+#
+# https://docs.puppetlabs.com/puppetdb/2.2/configure.html
+# https://github.com/puppetlabs/puppetlabs-puppetdb#java_args
+#
+$java_args = {
+  '-Xms'      => '192m', # initial memory allocation pool (java heap)
+  '-Xmx'      => '512m', # maximum memory allocation pool (java heap)
+}
+
 # Hard-code the certname or else puppetdb-ssl-setup fails.
 #
 ini_setting { 'certname':
@@ -32,6 +50,7 @@ class { 'puppetdb':
   node_purge_ttl     => '7d',
   report_ttl         => '14d',
   gc_interval        => '60',
+  java_args          => $java_args,
   require            => Ini_setting['certname'],
 }
 
