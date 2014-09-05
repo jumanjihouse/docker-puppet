@@ -32,6 +32,7 @@ and **puppetboard.inf.ise.com**.
    ```
    access_token=<your 40 char oauth token>
    repo_slug=ISEexchange/puppet
+   sleep_interval=60
    ```
 
 1. If using a single host for deployment: `script/deploy-single`
