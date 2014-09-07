@@ -25,6 +25,7 @@ $cname = 'puppetdb.inf.ise.com'
 $java_args = {
   '-Xms'      => '192m', # initial memory allocation pool (java heap)
   '-Xmx'      => '512m', # maximum memory allocation pool (java heap)
+  '-XX:OnOutOfMemoryError' => "='kill -9 %p'",
 }
 
 # Hard-code the certname or else puppetdb-ssl-setup fails.
