@@ -1,0 +1,18 @@
+# We list etcd first to prefer etcd over yaml.
+:backends:
+  - etcd
+  - yaml
+
+# For yaml backend.
+:yaml:
+  :datadir: '/opt/puppet/environments/%{::environment}/hieradata'
+:hierarchy:
+  - common
+
+# For hiera-etcd backend.
+# https://github.com/garethr/hiera-etcd
+:http:
+  :host: 172.17.42.1
+  :port: 4001
+  :paths:
+    - /configuration/common

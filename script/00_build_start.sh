@@ -11,5 +11,11 @@ for c in board-test db-test master-test named-test; do
 done
 smitty docker rm puppet-ca
 
+smitty curl -L -O -sS https://github.com/coreos/etcd/releases/download/v0.4.6/etcd-v0.4.6-linux-amd64.tar.gz
+smitty tar -zxf etcd-v0.4.6-linux-amd64.tar.gz
+ps -ef | grep '[e]tcd' || nohup etcd-v0.4.6-linux-amd64/etcd &
+smitty curl -L -X PUT http://127.0.0.1:4001/v2/keys/configuration/common/bar -d value="baz"
+smitty curl -L -X PUT http://127.0.0.1:4001/v2/keys/configuration/common/baz -d value="baz"
+
 # Always exit true.
 exit 0

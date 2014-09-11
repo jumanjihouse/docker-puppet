@@ -3,6 +3,7 @@ FROM jumanjiman/puppetagent
 # Install puppet master.
 RUN puppet module install stephenrjohnson/puppet
 RUN puppet module install puppetlabs/puppetdb
+RUN puppet module install puppetlabs/vcsrepo
 ADD install.pp /tmp/install.pp
 RUN puppet apply /tmp/install.pp
 

@@ -3,12 +3,29 @@ Package {
 }
 
 $gems = [
-  'etcd',       # https://github.com/ranjib/etcd-ruby
 ]
 
 package { $gems:
   ensure   => latest,
   provider => gem,
+}
+
+# Install version of https://github.com/ranjib/etcd-ruby
+# that is compatible with Ruby 1.8.7.
+#
+vcsrepo { '/etcd-ruby':
+  ensure   => present,
+  provider => git,
+  source   => 'https://github.com/jumanjiman/etcd-ruby.git',
+  revision => '187', # branch name
+} ->
+exec { 'build etcd':
+  command  => '/usr/bin/gem build etcd.gemspec',
+  cwd      => '/etcd-ruby',
+} ->
+exec { 'install etcd':
+  command  => '/usr/bin/gem install etcd-0.2.4.gem',
+  cwd      => '/etcd-ruby',
 }
 
 # We build the docker image with latest version of puppet master.
@@ -87,4 +104,13 @@ class { 'puppetdb::master::config':
   manage_report_processor     => false, # Do not interfere with puppet::master class above.
   manage_storeconfigs         => false, # Do not interfere with puppet::master class above.
   strict_validation           => false, # Allow docker images to build if puppetdb is down.
+}
+
+# Install hiera-etcd backend.
+#
+$url = 'https://raw.githubusercontent.com/garethr/hiera-etcd/master/lib/hiera/backend/etcd_backend.rb'
+exec { 'install hiera-etcd':
+  command => "/usr/bin/curl -sS -L -O $url",
+  cwd     => '/usr/lib/ruby/site_ruby/1.8/hiera/backend',
+  require => Package['puppet-server'],
 }
