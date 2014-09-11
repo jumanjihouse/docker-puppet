@@ -2,8 +2,7 @@
 FROM tianon/centos:6.5
 
 # Install EPEL yum repo.
-#RUN rpm -Uvh http://ftp.linux.ncsu.edu/pub/epel/beta/7/x86_64/epel-release-7-0.2.noarch.rpm
-RUN rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+RUN yum -y install epel-release; yum clean all
 
 # Add oval vulnerability scan script(s).
 ADD oval /oval
