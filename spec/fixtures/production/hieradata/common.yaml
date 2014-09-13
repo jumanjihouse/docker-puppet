@@ -3,3 +3,8 @@
 foo: bar
 
 baz: foo
+
+hash:
+  nested_hash:
+    msg_a: foo
+    msg_b: bar

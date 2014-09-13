@@ -3,6 +3,9 @@ set -e
 
 source script/functions
 
+# Start clean.
+script/00_build_start.sh
+
 say Start dns server so we can refer to test containers by name.
 #
 # Note: You must bind the DNS port to the management IP to avoid client error:
@@ -55,8 +58,10 @@ say Run puppet agent against master.
 hostname=foo.example.com
 cmd='puppet agent -t --server=puppet.inf.ise.com'
 out=/tmp/docker.out
+rm -fr $out
 #
 docker run --rm -t --dns=${mgmt_ip} --hostname=$hostname jumanjiman/puppetagent $cmd | tee -a $out
+grep -i error $out && /bin/false
 
 say Query puppetboard for the node.
 #

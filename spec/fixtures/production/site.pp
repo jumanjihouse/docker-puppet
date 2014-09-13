@@ -16,4 +16,14 @@ node default {
   $baz = hiera('baz')
   notify { "baz is ${baz}": }
   if $baz != 'baz' { fail('baz is not baz') }
+
+  # The hash exists in both, but we should read etcd first based on hiera.yaml.
+  # The purpose of this is to demonstrate how to publish a complex data structure
+  # in etcd (see script/00_build_start.sh) and read it via puppet manifest.
+  #
+  $hash = hiera_hash('hash')
+  notify { $hash[nested_hash][msg_a]: }
+  notify { $hash[nested_hash][msg_b]: }
+  if $hash[nested_hash][msg_a] != 'Bob Schneider' { fail('msg_a is wrong') }
+  if $hash[nested_hash][msg_b] != 'Tarantula!' { fail('msg_b is wrong') }
 }
