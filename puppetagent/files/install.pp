@@ -4,6 +4,7 @@ Package {
 
 $packages = [
   'bind-utils', # host and dig commands
+  'diffutils',
   'elinks',
   'git',
   'net-tools',  # hostname command
@@ -11,6 +12,7 @@ $packages = [
   'mlocate',
   'openscap-content',
   'openscap-utils',
+  'patch',
   'redhat-lsb',
   'redhat-rpm-config',
   'scap-security-guide',

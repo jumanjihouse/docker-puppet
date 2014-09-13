@@ -73,3 +73,9 @@ say Did we find the host in puppetboard?
 # Fail if we don't find our fqdn in the output.
 #
 grep "http://puppetboard.inf.ise.com/puppetboard/fact/fqdn/$hostname" $out && echo 'yes'
+
+say Clean puppet cert for foo.example.com
+#
+url="https://${mgmt_ip}:8140/production/certificate_status/${hostname}"
+curl -k -X PUT -H "Content-Type: text/pson" --data '{"desired_state":"revoked"}' ${url}
+curl -k -X DELETE -H "Accept: pson" ${url}

@@ -6,6 +6,8 @@ RUN puppet module install puppetlabs/puppetdb
 RUN puppet module install puppetlabs/vcsrepo
 ADD install.pp /tmp/install.pp
 RUN puppet apply /tmp/install.pp
+ADD auth.conf.patch /etc/puppet/auth.conf.patch
+RUN cd /etc/puppet; patch -p0 < auth.conf.patch
 
 # Fix up for Passenger 4.x
 # https://ask.puppetlabs.com/question/1210/do-puppet-and-puppet-dashboard-work-with-passenger-40x/
