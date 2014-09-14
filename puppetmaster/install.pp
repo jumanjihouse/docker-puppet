@@ -108,7 +108,8 @@ class { 'puppetdb::master::config':
 
 # Install hiera-etcd backend.
 #
-$url = 'https://raw.githubusercontent.com/garethr/hiera-etcd/master/lib/hiera/backend/etcd_backend.rb'
+# $url = 'https://raw.githubusercontent.com/garethr/hiera-etcd/master/lib/hiera/backend/etcd_backend.rb'
+$url = 'https://raw.githubusercontent.com/jumanjiman/hiera-etcd/json/lib/hiera/backend/etcd_backend.rb'
 exec { 'install hiera-etcd':
   command => "/usr/bin/curl -sS -L -O $url",
   cwd     => '/usr/lib/ruby/site_ruby/1.8/hiera/backend',

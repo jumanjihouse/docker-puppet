@@ -21,9 +21,19 @@ node default {
   # The purpose of this is to demonstrate how to publish a complex data structure
   # in etcd (see script/00_build_start.sh) and read it via puppet manifest.
   #
+  # Call with hiera_hash().
+  #
   $hash = hiera_hash('hash')
-  notify { $hash[nested_hash][msg_a]: }
-  notify { $hash[nested_hash][msg_b]: }
+  notify { "hiera_hash() ${hash[nested_hash][msg_a]}": }
+  notify { "hiera_hash() ${hash[nested_hash][msg_b]}": }
   if $hash[nested_hash][msg_a] != 'Bob Schneider' { fail('msg_a is wrong') }
   if $hash[nested_hash][msg_b] != 'Tarantula!' { fail('msg_b is wrong') }
+  #
+  # Call with hiera().
+  #
+  $hash2 = hiera('hash')
+  notify { "hiera() ${hash2[nested_hash][msg_a]}": }
+  notify { "hiera() ${hash2[nested_hash][msg_b]}": }
+  if $hash2[nested_hash][msg_a] != 'Bob Schneider' { fail('msg_a is wrong') }
+  if $hash2[nested_hash][msg_b] != 'Tarantula!' { fail('msg_b is wrong') }
 }
