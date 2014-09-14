@@ -10,7 +10,6 @@ $packages = [
   'net-tools',  # hostname command
   'man',
   'mlocate',
-  'openscap-content',
   'openscap-utils',
   'patch',
   'redhat-lsb',
