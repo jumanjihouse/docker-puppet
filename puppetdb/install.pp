@@ -64,3 +64,16 @@ exec { 'puppetdb-ssl-setup':
   command => '/usr/sbin/puppetdb ssl-setup',
   require => Service['puppetdb'],
 }
+
+# Allow to build this image on a host that has larger
+# kernel.shmmax than the target deployment host.
+# During build, postgres `initdb` automatically determines
+# tunables, so we have to override them if we want to
+# deploy the image to a host with different resources.
+#
+# https://github.com/jumanjihouse/docker-puppet/issues/15
+#
+postgresql::server::config_entry { 'shared_buffers':
+  value   => '3580',
+  require => Class['puppetdb'],
+}
