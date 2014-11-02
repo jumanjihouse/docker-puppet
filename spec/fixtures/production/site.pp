@@ -12,10 +12,10 @@ node default {
   notify { "bar is ${bar}": }
   if $bar != 'baz' { fail('bar not found') }
 
-  # baz exists in both, but we should read etcd first based on hiera.yaml.
+  # baz exists in both, but we should read yaml first based on hiera.yaml.
   $baz = hiera('baz')
   notify { "baz is ${baz}": }
-  if $baz != 'baz' { fail('baz is not baz') }
+  if $baz != 'foo' { fail('baz is not foo') }
 
   # The hash exists in both, but we should read etcd first based on hiera.yaml.
   # The purpose of this is to demonstrate how to publish a complex data structure
@@ -26,14 +26,14 @@ node default {
   $hash = hiera_hash('hash')
   notify { "hiera_hash() ${hash[nested_hash][msg_a]}": }
   notify { "hiera_hash() ${hash[nested_hash][msg_b]}": }
-  if $hash[nested_hash][msg_a] != 'Bob Schneider' { fail('msg_a is wrong') }
-  if $hash[nested_hash][msg_b] != 'Tarantula!' { fail('msg_b is wrong') }
+  if $hash[nested_hash][msg_a] != 'foo' { fail('msg_a is wrong') }
+  if $hash[nested_hash][msg_b] != 'bar' { fail('msg_b is wrong') }
   #
   # Call with hiera().
   #
   $hash2 = hiera('hash')
   notify { "hiera() ${hash2[nested_hash][msg_a]}": }
   notify { "hiera() ${hash2[nested_hash][msg_b]}": }
-  if $hash2[nested_hash][msg_a] != 'Bob Schneider' { fail('msg_a is wrong') }
-  if $hash2[nested_hash][msg_b] != 'Tarantula!' { fail('msg_b is wrong') }
+  if $hash2[nested_hash][msg_a] != 'foo' { fail('msg_a is wrong') }
+  if $hash2[nested_hash][msg_b] != 'bar' { fail('msg_b is wrong') }
 }
