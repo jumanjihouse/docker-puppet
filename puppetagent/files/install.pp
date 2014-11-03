@@ -20,24 +20,16 @@ $packages = [
 
 package { $packages:
   ensure => latest,
-}
+} ->
 
 exec { 'updates':
   command => '/usr/bin/yum -y update',
-}
+} ->
 
 exec { '/usr/sbin/makewhatis':
-  require => [
-    Package['man'],
-    Exec['updates'],
-  ],
-}
+} ->
 
 exec { '/usr/bin/updatedb':
-  require => [
-    Package['mlocate'],
-    Exec['updates'],
-  ],
 }
 
 # If /etc/securetty exists and is zero-length,
