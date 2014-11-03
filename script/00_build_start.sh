@@ -6,8 +6,7 @@ source script/functions
 
 say Remove existing containers if necessary.
 for c in board-test db-test master-test named-test; do
-  smitty docker stop $c
-  smitty docker rm $c
+  smitty docker rm -f $c
 done
 smitty docker rm puppet-ca
 
@@ -23,6 +22,7 @@ smitty curl -L -X PUT http://127.0.0.1:4001/v2/keys/configuration/common/baz -d 
 # Publish key "hash" with a nested hash as its value.
 smitty curl -L -X PUT http://127.0.0.1:4001/v2/keys/configuration/common/hash \
   -d value='{"nested_hash":{"msg_a":"Bob Schneider","msg_b":"Tarantula!"}}'
+echo
 
 # Always exit true.
 exit 0
