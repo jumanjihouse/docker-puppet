@@ -4,7 +4,7 @@ Overview [![wercker status](https://app.wercker.com/status/35648a683cf8c0271185a
 This repo contains scripts and source to build docker images for:
 
 * Puppet Agent
-* Puppet Server
+* Puppet Master
 * Puppet DB
 * PuppetBoard (dashboard)
 

@@ -44,12 +44,11 @@ docker run -d \
   --hostname=puppetboard.inf.ise.com \
   jumanjiman/puppetboard
 
-say Wait for puppetdb and puppetserver to become ready.
+say Sleep 2 minutes for puppetdb to become ready.
 #
-for x in $(seq 1 180); do
-  echo -n "."; sleep 1
-  docker logs master-test | grep 'Finished creating JRubyPuppet instance 3 of 3' &> /dev/null && break
-done
+for x in $(seq 1 60); do echo -n "."; sleep 1; done
+echo
+for x in $(seq 1 60); do echo -n "."; sleep 1; done
 echo
 
 say Run puppet agent against master.
@@ -58,12 +57,12 @@ say Run puppet agent against master.
 # does not exit until you press a key.
 #
 hostname=foo.example.com
-cmd='puppet agent -t --server=puppet.inf.ise.com --waitforcert=120'
+cmd='puppet agent -t --server=puppet.inf.ise.com'
 out=/tmp/docker.out
 rm -fr $out
 #
 docker run --rm -t --dns=${mgmt_ip} --hostname=$hostname jumanjiman/puppetagent $cmd | tee -a $out
-grep 'Notice: Finished catalog run' $out || /bin/false
+grep -i error $out && /bin/false
 
 say Query puppetboard for the node.
 #
@@ -79,6 +78,5 @@ grep "http://puppetboard.inf.ise.com/puppetboard/fact/fqdn/$hostname" $out && ec
 say Clean puppet cert for foo.example.com
 #
 url="https://${mgmt_ip}:8140/production/certificate_status/${hostname}"
-curl='curl -k --key ./ssl/private_keys/puppet.inf.ise.com.pem --cert ./ssl/certs/puppet.inf.ise.com.pem'
-$curl -X PUT -H "Content-Type: text/pson" --data '{"desired_state":"revoked"}' ${url}
-$curl -X DELETE -H "Accept: pson" ${url}
+curl -k -X PUT -H "Content-Type: text/pson" --data '{"desired_state":"revoked"}' ${url}
+curl -k -X DELETE -H "Accept: pson" ${url}

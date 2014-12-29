@@ -2,22 +2,30 @@ Package {
   allow_virtual => false,
 }
 
-# https://tickets.puppetlabs.com/browse/SERVER-24
-#
-file { '/var/lib/puppet/cli':
-  ensure   => link,
-  target   => '/usr/share/puppetserver/cli',
+$gems = [
+]
+
+package { $gems:
+  ensure   => latest,
+  provider => gem,
 }
 
-# https://github.com/puppetlabs/puppet-server/blob/master/documentation/gems.markdown
+# Install version of https://github.com/ranjib/etcd-ruby
+# that is compatible with Ruby 1.8.7.
 #
-exec { 'install jruby gems':
-  command  => 'puppetserver gem install etcd',
-  path     => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-  require  => [
-    File['/var/lib/puppet/cli'],
-    Package['puppetserver'],
-  ],
+vcsrepo { '/etcd-ruby':
+  ensure   => present,
+  provider => git,
+  source   => 'https://github.com/jumanjiman/etcd-ruby.git',
+  revision => '187', # branch name
+} ->
+exec { 'build etcd':
+  command  => '/usr/bin/gem build etcd.gemspec',
+  cwd      => '/etcd-ruby',
+} ->
+exec { 'install etcd':
+  command  => '/usr/bin/gem install etcd-0.2.4.gem',
+  cwd      => '/etcd-ruby',
 }
 
 # We build the docker image with latest version of puppet master.
@@ -70,10 +78,6 @@ $reports = 'store,puppetdb'
 # > should not be purged (e.g. users).
 #
 $storeconfigs = false
-
-package { 'puppetserver':
-  ensure  => $version,
-}
 
 # Create /etc/puppet/puppet.conf and a passenger configuration to
 # run puppetmaster within apache. See tuning recommendations at
