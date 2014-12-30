@@ -23,7 +23,7 @@ package { $packages:
 } ->
 
 exec { 'updates':
-  command => '/usr/bin/yum -y update',
+  command => '/usr/bin/yum -y update && /usr/bin/yum clean all',
 } ->
 
 exec { '/usr/sbin/makewhatis':
