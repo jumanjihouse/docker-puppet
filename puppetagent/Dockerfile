@@ -1,5 +1,5 @@
 # I want to use centos7, but epel7 lacks mod_passenger atm.
-FROM tianon/centos:6.5
+FROM centos:centos6
 
 # http://superuser.com/a/817649
 RUN sed -i '/excludedocs/d' /etc/rpm/macros.imgcreate; \
