@@ -93,6 +93,7 @@ class { 'puppet::master':
   version         => $version,
   reports         => $reports,
   storeconfigs    => $storeconfigs,
+  log_stdout      => true,
 }
 
 # Add puppetdb params to /etc/puppet/puppet.conf.

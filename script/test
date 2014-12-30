@@ -80,3 +80,9 @@ say Clean puppet cert for foo.example.com
 url="https://${mgmt_ip}:8140/production/certificate_status/${hostname}"
 curl -k -X PUT -H "Content-Type: text/pson" --data '{"desired_state":"revoked"}' ${url}
 curl -k -X DELETE -H "Accept: pson" ${url}
+echo
+
+say Check that "docker logs master-test" is meaningful.
+docker logs master-test 2>&1 | tee /tmp/master.log
+line_count=$(cat /tmp/master.log | wc -l)
+[[ $line_count -gt 100 ]] && echo OK || /bin/false

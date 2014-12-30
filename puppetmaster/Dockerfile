@@ -4,6 +4,14 @@ FROM jumanjiman/puppetagent
 RUN puppet module install stephenrjohnson/puppet
 RUN puppet module install puppetlabs/puppetdb
 RUN puppet module install puppetlabs/vcsrepo
+
+# @todo remove the following RUN directive after
+# stephenrjohnson/puppet includes the `log_stdout' directive.
+# @see https://github.com/stephenrjohnson/puppetmodule/pull/85
+RUN cd /etc/puppet/modules; \
+    rm -fr puppet; \
+    git clone -b logdest https://github.com/jumanjiman/puppetmodule.git puppet
+
 ADD install.pp /tmp/install.pp
 RUN puppet apply /tmp/install.pp
 ADD auth.conf.patch /etc/puppet/auth.conf.patch
