@@ -4,12 +4,13 @@ After=docker.service
 Requires=docker.service
 
 [Service]
+EnvironmentFile=-/etc/autostager.env
 ExecStartPre=/bin/bash -c '/usr/bin/docker inspect %n &> /dev/null && /usr/bin/docker rm %n || :'
 ExecStart=/usr/bin/docker run \
   --name %n \
   --hostname puppetboard.inf.ise.com \
   -p 80:80 \
-  jumanjiman/puppetboard
+  jumanjiman/puppetboard:${tag}
 ExecStop=/usr/bin/docker stop %n
 RestartSec=5s
 Restart=always

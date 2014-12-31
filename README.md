@@ -27,12 +27,15 @@ and **puppetboard.inf.ise.com**.
    cd docker-puppet
    ```
 
-1. On the puppetmaster host, create `/etc/autostager.env`:
+1. On each host, create `/etc/autostager.env`:
 
    ```
    access_token=<your 40 char oauth token>
    repo_slug=ISEexchange/puppet
    sleep_interval=60
+   tag=latest
+   # Optionally, use a specific tagged build.
+   # tag=<hash>
    ```
 
 1. If using a single host for deployment: `script/deploy-single`
