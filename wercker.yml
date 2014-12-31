@@ -46,3 +46,61 @@ build:
         name: scan puppetmaster for vulnerabilities
         code: |
           docker run --rm -t jumanjiman/puppetmaster /oval/vulnerability-scan.sh || :
+    - zvelo/docker-save:
+        image: jumanjiman/puppetagent:${WERCKER_GIT_COMMIT:0:7}
+    - zvelo/docker-save:
+        image: jumanjiman/puppetagent:latest
+    - zvelo/docker-save:
+        image: jumanjiman/puppetboard:${WERCKER_GIT_COMMIT:0:7}
+    - zvelo/docker-save:
+        image: jumanjiman/puppetboard:latest
+    - zvelo/docker-save:
+        image: jumanjiman/puppetdb:${WERCKER_GIT_COMMIT:0:7}
+    - zvelo/docker-save:
+        image: jumanjiman/puppetdb:latest
+    - zvelo/docker-save:
+        image: jumanjiman/puppetmaster:${WERCKER_GIT_COMMIT:0:7}
+    - zvelo/docker-save:
+        image: jumanjiman/puppetmaster:latest
+deploy:
+  steps:
+    - zvelo/docker-hub-push:
+        image: jumanjiman/puppetagent:${WERCKER_GIT_COMMIT:0:7}
+        email: ${email}
+        password: ${password}
+        username: jumanjiman
+    - zvelo/docker-hub-push:
+        image: jumanjiman/puppetagent:latest
+        email: ${email}
+        password: ${password}
+        username: jumanjiman
+    - zvelo/docker-hub-push:
+        image: jumanjiman/puppetboard:${WERCKER_GIT_COMMIT:0:7}
+        email: ${email}
+        password: ${password}
+        username: jumanjiman
+    - zvelo/docker-hub-push:
+        image: jumanjiman/puppetboard:latest
+        email: ${email}
+        password: ${password}
+        username: jumanjiman
+    - zvelo/docker-hub-push:
+        image: jumanjiman/puppetdb:${WERCKER_GIT_COMMIT:0:7}
+        email: ${email}
+        password: ${password}
+        username: jumanjiman
+    - zvelo/docker-hub-push:
+        image: jumanjiman/puppetdb:latest
+        email: ${email}
+        password: ${password}
+        username: jumanjiman
+    - zvelo/docker-hub-push:
+        image: jumanjiman/puppetmaster:${WERCKER_GIT_COMMIT:0:7}
+        email: ${email}
+        password: ${password}
+        username: jumanjiman
+    - zvelo/docker-hub-push:
+        image: jumanjiman/puppetmaster:latest
+        email: ${email}
+        password: ${password}
+        username: jumanjiman

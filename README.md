@@ -8,6 +8,12 @@ This repo contains scripts and source to build docker images for:
 * Puppet DB
 * PuppetBoard (dashboard)
 
+The wercker build and test harness also pushes these images
+to the docker hub. Each image has two tags:
+
+* Commit hash of this repo at the time of build, and
+* "latest", which points to the latest commit hash tag.
+
 
 Deployment
 ----------
