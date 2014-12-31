@@ -74,6 +74,7 @@ say Did we find the host in puppetboard?
 # Fail if we don't find our fqdn in the output.
 #
 grep "http://puppetboard.inf.ise.com/puppetboard/fact/fqdn/$hostname" $out && echo 'yes'
+grep "Internal Server Error" $out && /bin/false
 
 say Clean puppet cert for foo.example.com
 #
