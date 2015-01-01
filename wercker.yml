@@ -28,6 +28,9 @@ build:
         name: build puppetboard
         code: script/15_build_puppetboard.sh
     - script:
+        name: build autostager
+        code: script/20_build_autostager.sh
+    - script:
         name: run the test suite
         code: script/test
     - script:
@@ -62,6 +65,10 @@ build:
         image: jumanjiman/puppetmaster:${WERCKER_GIT_COMMIT:0:7}
     - zvelo/docker-save:
         image: jumanjiman/puppetmaster:latest
+    - zvelo/docker-save:
+        image: jumanjiman/autostager:${WERCKER_GIT_COMMIT:0:7}
+    - zvelo/docker-save:
+        image: jumanjiman/autostager:latest
 deploy:
   steps:
     - zvelo/docker-hub-push:
@@ -101,6 +108,16 @@ deploy:
         username: jumanjiman
     - zvelo/docker-hub-push:
         image: jumanjiman/puppetmaster:latest
+        email: ${email}
+        password: ${password}
+        username: jumanjiman
+    - zvelo/docker-hub-push:
+        image: jumanjiman/autostager:${WERCKER_GIT_COMMIT:0:7}
+        email: ${email}
+        password: ${password}
+        username: jumanjiman
+    - zvelo/docker-hub-push:
+        image: jumanjiman/autostager:latest
         email: ${email}
         password: ${password}
         username: jumanjiman

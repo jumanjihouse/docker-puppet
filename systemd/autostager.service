@@ -15,7 +15,7 @@ ExecStart=/usr/bin/docker run \
   -e repo_slug=${repo_slug} \
   -e sleep_interval=${sleep_interval} \
   --volumes-from autostager.data \
-  jumanjiman/autostager
+  jumanjiman/autostager:${tag}
 ExecStop=/usr/bin/docker stop %n
 RestartSec=5s
 Restart=always
