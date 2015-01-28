@@ -1,4 +1,5 @@
 box: wercker-labs/docker
+no-response-timeout: 30
 build:
   steps:
     - install-packages:
