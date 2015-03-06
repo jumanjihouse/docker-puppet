@@ -4,7 +4,7 @@ FROM gliderlabs/alpine:latest
 # http://jumanjiman.github.io/
 MAINTAINER Paul Morgan <jumanjiman@gmail.com>
 
-RUN apk-install ruby ca-certificates ruby-dev
+RUN apk-install ruby ca-certificates ruby-dev git perl
 RUN gem install --no-rdoc --no-ri puppet-autostager
 
 # Do not track changes in volumes.
