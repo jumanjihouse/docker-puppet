@@ -67,7 +67,7 @@ grep -i error $out && /bin/false
 
 say Query puppetboard for the node.
 #
-cmd="elinks -dump http://puppetboard.inf.ise.com/puppetboard/node/$hostname"
+cmd="elinks -dump http://puppetboard.inf.ise.com/node/$hostname"
 docker run --rm -t --dns=${mgmt_ip} --hostname=$hostname jumanjiman/puppetagent $cmd | tee -a $out
 
 say Did we find the host in puppetboard?

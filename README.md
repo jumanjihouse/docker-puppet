@@ -194,7 +194,7 @@ References
 * https://docs.docker.com/
 * https://coreos.com/docs/
 * https://github.com/jpetazzo/nsenter
-* https://github.com/nibalizer/puppet-module-puppetboard
+* https://github.com/puppet-community/puppetboard
 
 
 :warning: Warning
