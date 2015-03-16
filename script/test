@@ -15,7 +15,7 @@ mgmt_ip=$(ip route get 8.8.8.8 | awk '/src/ {print $NF}')
 docker run -d \
   --name named-test \
   -p ${mgmt_ip}:53:53 -p ${mgmt_ip}:53:53/udp \
-  -e FACTER_public_ipaddress=${mgmt_ip} \
+  -e public_ipaddress=${mgmt_ip} \
   jumanjiman/named
 
 say Start the test containers.

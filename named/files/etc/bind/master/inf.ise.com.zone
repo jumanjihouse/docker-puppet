@@ -9,6 +9,6 @@ $TTL 1D
         A       127.0.0.1
         AAAA    ::1
 
-puppet      A <%= @public_ipaddress || @ipaddress %>
-puppetboard A <%= @public_ipaddress || @ipaddress %>
-puppetdb    A <%= @public_ipaddress || @ipaddress %>
+puppet      A public_ipaddress
+puppetboard A public_ipaddress
+puppetdb    A public_ipaddress

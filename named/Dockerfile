@@ -1,14 +1,7 @@
-FROM jumanjiman/puppetagent
+FROM gliderlabs/alpine:latest
 
-ADD start.sh /usr/local/sbin/start.sh
-
-# https://forge.puppetlabs.com/thias/bind
-RUN puppet module install thias-bind
-
-ADD install.pp /tmp/
-ADD inf.ise.com.zone.erb /tmp/
-
-RUN puppet apply /tmp/install.pp
+RUN apk-install bind
+COPY files /
 
 # Note: You must bind the DNS port to the management IP to avoid client error:
 # ;; reply from unexpected source: yyy.yyy.yyy.yyy#53, expected xxx.xxx.xxx.xxx#53
