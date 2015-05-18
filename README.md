@@ -3,10 +3,10 @@ Overview [![wercker status](https://app.wercker.com/status/35648a683cf8c0271185a
 
 This repo contains scripts and source to build docker images for:
 
-* Puppet Agent
-* Puppet Master
-* Puppet DB
-* PuppetBoard (dashboard)
+* [![](https://badge.imagelayers.io/jumanjiman/puppetagent.svg)](https://imagelayers.io/?images=jumanjiman/puppetagent:latest 'Size') Puppet Agent
+* [![](https://badge.imagelayers.io/jumanjiman/puppetmaster.svg)](https://imagelayers.io/?images=jumanjiman/puppetmaster:latest 'Size') Puppet Master
+* [![](https://badge.imagelayers.io/jumanjiman/puppetdb.svg)](https://imagelayers.io/?images=jumanjiman/puppetdb:latest 'Size') Puppet DB
+* [![](https://badge.imagelayers.io/jumanjiman/puppetboard.svg)](https://imagelayers.io/?images=jumanjiman/puppetboard:latest 'Size') PuppetBoard (dashboard)
 
 The wercker build and test harness also pushes these images
 to the docker hub. Each image has two tags:
