@@ -94,6 +94,7 @@ class { 'puppet::master':
   reports         => $reports,
   storeconfigs    => $storeconfigs,
   log_stdout      => true,
+  passenger_high_performance => 'On',
 }
 
 # Add puppetdb params to /etc/puppet/puppet.conf.
