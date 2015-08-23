@@ -54,6 +54,9 @@ echo
 for x in $(seq 1 60); do echo -n "."; sleep 1; done
 echo
 
+say Show puppetdb logs
+docker logs db-test
+
 say Run puppet agent against master.
 #
 # Do not use `-i' or else docker waits on stdin and
