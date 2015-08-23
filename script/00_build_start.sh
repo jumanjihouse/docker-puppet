@@ -13,7 +13,12 @@ smitty docker rm puppet-ca
 # Download and start etcd.
 smitty curl -L -O -sS https://github.com/coreos/etcd/releases/download/v0.4.6/etcd-v0.4.6-linux-amd64.tar.gz
 smitty tar -zxf etcd-v0.4.6-linux-amd64.tar.gz
+smitty ls -l etcd-v0.4.6-linux-amd64
+echo start etcd
 ps -ef | grep '[e]tcd' || nohup etcd-v0.4.6-linux-amd64/etcd &
+sleep 5
+ps -ef | grep '[e]tcd'
+ss -tulpn || netstat -tulpn
 
 # Publish two simple key/value pairs.
 smitty curl -L -X PUT http://127.0.0.1:4001/v2/keys/configuration/common/bar -d value="baz"

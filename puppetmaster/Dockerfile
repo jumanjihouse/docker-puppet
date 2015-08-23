@@ -1,16 +1,12 @@
 FROM jumanjiman/puppetagent
 
 # Install puppet master.
+RUN puppet module install puppetlabs/puppetdb --version 4.2.1
 RUN puppet module install stephenrjohnson/puppet
-RUN puppet module install puppetlabs/puppetdb
 RUN puppet module install puppetlabs/vcsrepo
 
-# @todo remove the following RUN directive after
-# stephenrjohnson/puppet includes the `log_stdout' directive.
-# @see https://github.com/stephenrjohnson/puppetmodule/pull/85
-RUN cd /etc/puppet/modules; \
-    rm -fr puppet; \
-    git clone -b logdest https://github.com/jumanjiman/puppetmodule.git puppet
+# https://bugzilla.redhat.com/show_bug.cgi?id=1213602#c13
+RUN yum clean all && touch /var/lib/rpm/*
 
 ADD install.pp /tmp/install.pp
 RUN puppet apply /tmp/install.pp
@@ -20,6 +16,10 @@ RUN cd /etc/puppet; patch -p0 < auth.conf.patch
 # Fix up for Passenger 4.x
 # https://ask.puppetlabs.com/question/1210/do-puppet-and-puppet-dashboard-work-with-passenger-40x/
 RUN sed -i 's/^.*AutoDetect.*/# &/' /etc/httpd/conf.d/puppet_passenger.conf
+
+# Log to stdout.
+RUN sed -i 's/CustomLog.*/CustomLog "|cat" common/g' /etc/httpd/conf.d/40-puppet-puppet.inf.ise.com.conf
+RUN sed -i 's/ErrorLog.*/ErrorLog "|cat"/g' /etc/httpd/conf.d/40-puppet-puppet.inf.ise.com.conf
 
 ADD start.sh /usr/local/sbin/start.sh
 ADD ssl /var/lib/puppet/ssl

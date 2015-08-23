@@ -14,9 +14,12 @@ say Start dns server so we can refer to test containers by name.
 mgmt_ip=$(ip route get 8.8.8.8 | awk '/src/ {print $NF}')
 docker run -d \
   --name named-test \
-  -p ${mgmt_ip}:53:53 -p ${mgmt_ip}:53:53/udp \
+  -p ${mgmt_ip}:53:2253 -p ${mgmt_ip}:53:2253/udp \
   -e public_ipaddress=${mgmt_ip} \
   jumanjiman/named
+
+sleep 5
+docker logs named-test
 
 say Start the test containers.
 #
@@ -51,6 +54,9 @@ echo
 for x in $(seq 1 60); do echo -n "."; sleep 1; done
 echo
 
+say Show puppetdb logs
+docker logs db-test
+
 say Run puppet agent against master.
 #
 # Do not use `-i' or else docker waits on stdin and
@@ -63,7 +69,6 @@ rm -fr $out
 #
 docker run --rm -t --dns=${mgmt_ip} --hostname=$hostname jumanjiman/puppetagent $cmd | tee -a $out
 grep 'Notice: Finished catalog run' $out || /bin/false
-grep -i error $out && /bin/false
 
 say Query puppetboard for the node.
 #

@@ -31,7 +31,7 @@ exec { 'install etcd':
 # We build the docker image with latest version of puppet master.
 # We can then A/B test the resulting container.
 #
-$version = 'latest'
+$version = '3.8.2-1.el6'
 
 # Master cert contains several names.
 #
@@ -93,8 +93,6 @@ class { 'puppet::master':
   version         => $version,
   reports         => $reports,
   storeconfigs    => $storeconfigs,
-  log_stdout      => true,
-  passenger_high_performance => 'On',
 }
 
 # Add puppetdb params to /etc/puppet/puppet.conf.
@@ -106,6 +104,9 @@ class { 'puppetdb::master::config':
   manage_report_processor     => false, # Do not interfere with puppet::master class above.
   manage_storeconfigs         => false, # Do not interfere with puppet::master class above.
   strict_validation           => false, # Allow docker images to build if puppetdb is down.
+  terminus_package            => 'puppetdb-terminus', # Support puppetdb < 3.
+  puppet_service_name         => 'puppetmaster',
+  puppetdb_version            => '2.3.6-1.el6',
 }
 
 # Install hiera-etcd backend.

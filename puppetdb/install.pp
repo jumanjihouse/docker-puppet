@@ -25,7 +25,7 @@ $cname = 'puppetdb.inf.ise.com'
 $java_args = {
   '-Xms'      => '192m', # initial memory allocation pool (java heap)
   '-Xmx'      => '512m', # maximum memory allocation pool (java heap)
-  '-XX:OnOutOfMemoryError' => "='kill -9 %p'",
+  '-XX:OnOutOfMemoryError' => "='kill -9 %p'", # not idempotent
 }
 
 # Hard-code the certname or else puppetdb-ssl-setup fails.
@@ -42,6 +42,7 @@ ini_setting { 'certname':
 # http://docs.puppetlabs.com/puppetdb/2.1/configure.html
 #
 class { 'puppetdb':
+  confdir            => '/etc/puppetdb/conf.d',
   listen_address     => '0.0.0.0',
   listen_port        => '8080',
   disable_ssl        => false,
@@ -52,6 +53,7 @@ class { 'puppetdb':
   report_ttl         => '14d',
   gc_interval        => '60',
   java_args          => $java_args,
+  puppetdb_version   => '2.3.6-1.el6',
   require            => Ini_setting['certname'],
 }
 

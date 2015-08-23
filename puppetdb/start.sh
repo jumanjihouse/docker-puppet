@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 # Protect against dirty shutdown.
 rm -fr /var/run/puppetdb*
