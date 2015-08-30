@@ -6,6 +6,12 @@ source script/functions
 # Start clean.
 script/00_build_start.sh
 
+say Create fixtures data container.
+docker create \
+  --name fixtures-test \
+  jumanjiman/fixtures \
+  /bin/true || :
+
 say Start dns server so we can refer to test containers by name.
 #
 # Note: You must bind the DNS port to the management IP to avoid client error:
@@ -37,7 +43,7 @@ docker run -d \
   -p 8140:8140 \
   --dns=${mgmt_ip} \
   --hostname=puppet.inf.ise.com \
-  -v $(pwd)/spec/fixtures:/opt/puppet/environments \
+  --volumes-from fixtures-test \
   jumanjiman/puppetmaster
 
 docker run -d \
@@ -68,6 +74,11 @@ out=/tmp/docker.out
 rm -fr $out
 #
 docker run --rm -t --dns=${mgmt_ip} --hostname=$hostname jumanjiman/puppetagent $cmd | tee -a $out
+
+say Look for specific messages
+grep 'foo is bar' $out
+grep 'bar is baz' $out
+grep 'baz is foo' $out
 grep 'Notice: Finished catalog run' $out || /bin/false
 
 say Query puppetboard for the node.
@@ -79,7 +90,7 @@ say Did we find the host in puppetboard?
 #
 # Fail if we don't find our fqdn in the output.
 #
-grep "http://puppetboard.inf.ise.com/puppetboard/fact/fqdn/$hostname" $out && echo 'yes'
+grep "http://puppetboard.inf.ise.com/fact/fqdn/$hostname" $out && echo 'yes'
 grep "Internal Server Error" $out && /bin/false
 
 say Clean puppet cert for foo.example.com
@@ -91,5 +102,8 @@ echo
 
 say Check that "docker logs master-test" is meaningful.
 docker logs master-test 2>&1 | tee /tmp/master.log
-line_count=$(cat /tmp/master.log | wc -l)
-[[ $line_count -gt 100 ]] && echo OK || /bin/false
+
+say Look for specific messages
+grep "Signed certificate request for ${hostname}" /tmp/master.log
+grep "Compiled catalog for ${hostname} in environment production" /tmp/master.log
+grep "Removing file Puppet::SSL::Certificate ${hostname}" /tmp/master.log

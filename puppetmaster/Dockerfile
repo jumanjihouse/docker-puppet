@@ -1,28 +1,62 @@
-FROM jumanjiman/puppetagent
+FROM alpine:3.2
 
-# Install puppet master.
-RUN puppet module install puppetlabs/puppetdb --version 4.2.1
-RUN puppet module install stephenrjohnson/puppet
-RUN puppet module install puppetlabs/vcsrepo
+ENV PUPPET_VERSION 3.8.2
+ENV PUPPETDB_VERSION 2.3.6
 
-# https://bugzilla.redhat.com/show_bug.cgi?id=1213602#c13
-RUN yum clean all && touch /var/lib/rpm/*
+# Dependencies:
+#   make - passenger
+#   shadow - puppet
+#   util-linux - uuidgen for puppet
+#   ruby < 2.2 (from alpine 3.1) to avoid syck errors in puppet 3.x
+#
+# https://tickets.puppetlabs.com/browse/PUP-3796 (syck error in ruby 2.2)
+#
+# http://wiki.alpinelinux.org/wiki/Alpine_Linux_package_management#Holding_a_specific_package_back
+#
+RUN echo http://dl-4.alpinelinux.org/alpine/edge/testing/ >> /etc/apk/repositories && \
+    echo http://dl-4.alpinelinux.org/alpine/v3.1/main >> /etc/apk/repositories && \
+    apk add --update \
+      ca-certificates \
+      make \
+      nginx \
+      openssl \
+      'ruby<2.2' \
+      shadow \
+      util-linux \
+    && \
+    rm -f /var/cache/apk/*
 
-ADD install.pp /tmp/install.pp
-RUN puppet apply /tmp/install.pp
-ADD auth.conf.patch /etc/puppet/auth.conf.patch
-RUN cd /etc/puppet; patch -p0 < auth.conf.patch
+RUN gem install -N \
+      etcd \
+      facter \
+      passenger \
+      puppet:=${PUPPET_VERSION} \
+    && \
+    rm -fr /root/.gem*
 
-# Fix up for Passenger 4.x
-# https://ask.puppetlabs.com/question/1210/do-puppet-and-puppet-dashboard-work-with-passenger-40x/
-RUN sed -i 's/^.*AutoDetect.*/# &/' /etc/httpd/conf.d/puppet_passenger.conf
+RUN adduser -D puppet
 
-# Log to stdout.
-RUN sed -i 's/CustomLog.*/CustomLog "|cat" common/g' /etc/httpd/conf.d/40-puppet-puppet.inf.ise.com.conf
-RUN sed -i 's/ErrorLog.*/ErrorLog "|cat"/g' /etc/httpd/conf.d/40-puppet-puppet.inf.ise.com.conf
+# Install appropriate version of puppetdb-terminus and hiera-etcd backend.
+# https://github.com/puppetlabs/puppetdb/blob/2.3.x/documentation/connect_puppet_master.markdown
+RUN apk add -U curl && \
+    curl -L -O https://github.com/puppetlabs/puppetdb/archive/${PUPPETDB_VERSION}.tar.gz && \
+    tar xzf ${PUPPETDB_VERSION}.tar.gz -C /tmp && \
+    cp -r /tmp/puppetdb-${PUPPETDB_VERSION}/puppet/lib/puppet /usr/lib/ruby/2.1.0/puppet && \
+    rm -fr /tmp/${PUPPETDB_VERSION}.tar.gz && \
+    rm -fr /tmp/puppetdb-${PUPPETDB_VERSON} && \
+    cd /tmp/ && \
+    curl -sS -L -O https://raw.githubusercontent.com/garethr/hiera-etcd/master/lib/hiera/backend/etcd_backend.rb && \
+    cp etcd_backend.rb /usr/lib/ruby/gems/2.1.0/gems/puppet-${PUPPET_VERSION}/lib/hiera/backend && \
+    cp etcd_backend.rb /usr/lib/ruby/gems/2.1.0/gems/hiera-*/lib/hiera/backend && \
+    apk del --purge curl && \
+    rm -f /var/cache/apk/*
 
-ADD start.sh /usr/local/sbin/start.sh
+# Put configs in place.
+COPY etc/puppet /etc/puppet
+
 ADD ssl /var/lib/puppet/ssl
+
+# Puppet needs RW privileges for certdir.
 RUN chown -R puppet:puppet /var/lib/puppet/ssl
 
 # We use separate data container for SSL certs.
@@ -33,4 +67,5 @@ VOLUME ["/var/lib/puppet/ssl/"]
 VOLUME ["/opt/puppet/environments/"]
 
 EXPOSE 8140
-CMD ["/usr/local/sbin/start.sh"]
+ENTRYPOINT ["puppet"]
+CMD ["master", "--no-daemonize", "--confdir=/etc/puppet/", "--vardir=/var/lib/puppet/"]
