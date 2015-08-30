@@ -46,10 +46,6 @@ build:
         name: scan puppetdb for vulnerabilities
         code: |
           docker run --rm -t jumanjiman/puppetdb     /oval/vulnerability-scan.sh || :
-    - script:
-        name: scan puppetmaster for vulnerabilities
-        code: |
-          docker run --rm -t jumanjiman/puppetmaster /oval/vulnerability-scan.sh || :
     - zvelo/docker-save:
         image: jumanjiman/puppetagent:${WERCKER_GIT_COMMIT:0:7}
     - zvelo/docker-save:
