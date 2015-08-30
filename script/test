@@ -6,6 +6,12 @@ source script/functions
 # Start clean.
 script/00_build_start.sh
 
+say Create fixtures data container.
+docker create \
+  --name fixtures-test \
+  jumanjiman/fixtures \
+  /bin/true || :
+
 say Start dns server so we can refer to test containers by name.
 #
 # Note: You must bind the DNS port to the management IP to avoid client error:
@@ -37,7 +43,7 @@ docker run -d \
   -p 8140:8140 \
   --dns=${mgmt_ip} \
   --hostname=puppet.inf.ise.com \
-  -v $(pwd)/spec/fixtures:/opt/puppet/environments \
+  --volumes-from fixtures-test \
   jumanjiman/puppetmaster
 
 docker run -d \

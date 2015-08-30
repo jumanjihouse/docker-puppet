@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# This file exists as a placeholder to work around
+# known bug https://tickets.puppetlabs.com/browse/PUP-3655
+# and avoid this error in the test harness...
+#   Error: /File[/var/lib/puppet/facts.d]: Could not evaluate: Could not retrieve information from environment production source(s)
+echo 'bug=https://tickets.puppetlabs.com/browse/PUP-3655'

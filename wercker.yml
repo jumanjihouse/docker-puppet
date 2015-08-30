@@ -18,6 +18,9 @@ build:
         name: build puppet agent base image
         code: script/01_build_puppetagent.sh
     - script:
+        name: build fixtures image
+        code: script/02_build_fixtures.sh
+    - script:
         name: build dns server
         code: script/05_build_named.sh
     - script:
