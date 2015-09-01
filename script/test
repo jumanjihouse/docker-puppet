@@ -100,10 +100,15 @@ curl -k -X PUT -H "Content-Type: text/pson" --data '{"desired_state":"revoked"}'
 curl -k -X DELETE -H "Accept: pson" ${url}
 echo
 
+# We configure master to log its output to console via `etc/puppet/config.ru'.
 say Check that "docker logs master-test" is meaningful.
 docker logs master-test 2>&1 | tee /tmp/master.log
+sync
+sync
 
 say Look for specific messages
 grep "Signed certificate request for ${hostname}" /tmp/master.log
 grep "Compiled catalog for ${hostname} in environment production" /tmp/master.log
-grep "Removing file Puppet::SSL::Certificate ${hostname}" /tmp/master.log
+grep "Removing file Puppet::SSL::Certificate.* ${hostname}" /tmp/master.log
+grep -i 'nginx entered running state' /tmp/master.log
+grep -i 'unicorn entered running state' /tmp/master.log

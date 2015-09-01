@@ -1,6 +1,8 @@
 FROM alpine:3.2
 
 ENV PUPPET_VERSION 3.8.2
+
+# Must match puppetdb container version.
 ENV PUPPETDB_VERSION 2.3.6
 
 # Dependencies:
@@ -18,18 +20,23 @@ RUN echo http://dl-4.alpinelinux.org/alpine/edge/testing/ >> /etc/apk/repositori
     apk add --update \
       ca-certificates \
       git \
-      make \
       nginx \
       openssl \
+      py-pip \
       'ruby<2.2' \
+      ruby-unicorn \
       shadow \
+      supervisor \
       util-linux \
     && \
-    rm -f /var/cache/apk/*
+    rm -f /var/cache/apk/* && \
+    pip install supervisor-stdout
 
+# Install gems compatible with ruby < 2.2
 RUN gem install -N \
       etcd \
       facter \
+      rack \
       puppet:=${PUPPET_VERSION} \
     && \
     rm -fr /root/.gem*
@@ -52,21 +59,22 @@ RUN apk add -U curl && \
     apk del --purge curl && \
     rm -f /var/cache/apk/*
 
-# Put configs in place.
-COPY etc/puppet /etc/puppet
+# Put configs and scripts in place.
+COPY . /
 
-ADD ssl /var/lib/puppet/ssl
+# Harden the image.
+# This must be done *before* we configure volumes.
+RUN /usr/sbin/prepare.sh
+RUN /usr/sbin/harden.sh
 
-# Puppet needs RW privileges for certdir.
-RUN chown -R puppet:puppet /var/lib/puppet/ssl
-
-# We use separate data container for SSL certs.
-# (Or, we would like to.)
-VOLUME ["/var/lib/puppet/ssl/"]
+# Do not persist anything in these dirs.
+VOLUME ["/var/lib/", "/var/log", "/tmp"]
 
 # We use dynamic environments.
 VOLUME ["/opt/puppet/environments/"]
 
 EXPOSE 8140
-ENTRYPOINT ["puppet"]
-CMD ["master", "--no-daemonize", "--confdir=/etc/puppet/", "--vardir=/var/lib/puppet/"]
+
+USER puppet
+ENTRYPOINT ["supervisord"]
+CMD ["-u", "puppet"]
