@@ -1,4 +1,4 @@
-Overview [![wercker status](https://app.wercker.com/status/35648a683cf8c0271185add04354aff1/s/master "wercker status")](https://app.wercker.com/project/bykey/35648a683cf8c0271185add04354aff1)
+Overview
 --------
 
 This repo contains scripts and source to build docker images for:
@@ -8,10 +8,10 @@ This repo contains scripts and source to build docker images for:
 * [![](https://badge.imagelayers.io/jumanjiman/puppetdb.svg)](https://imagelayers.io/?images=jumanjiman/puppetdb:latest 'Size') Puppet DB
 * [![](https://badge.imagelayers.io/jumanjiman/puppetboard.svg)](https://imagelayers.io/?images=jumanjiman/puppetboard:latest 'Size') PuppetBoard (dashboard)
 
-The wercker build and test harness also pushes these images
+The build and test harness also pushes these images
 to the docker hub. Each image has two tags:
 
-* Commit hash of this repo at the time of build, and
+* DateTime of build plus commit hash of this repo at the time of build, and
 * "latest", which points to the latest commit hash tag.
 
 
@@ -90,8 +90,7 @@ sudo nsenter --target $PID --mount --uts --ipc --net --pid
 OVAL vulnerability scan
 -----------------------
 
-The wercker test harness runs a vulnerability scan.
-You can also perform the scan inside a running container via:
+You can perform the scan inside a running container via:
 
     /oval/vulnerability-scan.sh
 
@@ -167,8 +166,6 @@ a [topic branch](http://progit.org/book/ch3-4.html) of your fork.
 
 ### Testing
 
-[wercker](https://app.wercker.com/#applications/53e7d5cf284f37ea620e453b)
-automatically runs the test harness against each pull request.
 You can run tests **locally** via:
 
     script/build.sh && script/test
