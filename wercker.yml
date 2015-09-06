@@ -18,6 +18,9 @@ build:
         name: build puppet agent base image
         code: script/01_build_puppetagent.sh
     - script:
+        name: build fixtures image
+        code: script/02_build_fixtures.sh
+    - script:
         name: build dns server
         code: script/05_build_named.sh
     - script:
@@ -43,79 +46,3 @@ build:
         name: scan puppetdb for vulnerabilities
         code: |
           docker run --rm -t jumanjiman/puppetdb     /oval/vulnerability-scan.sh || :
-    - script:
-        name: scan puppetmaster for vulnerabilities
-        code: |
-          docker run --rm -t jumanjiman/puppetmaster /oval/vulnerability-scan.sh || :
-    - zvelo/docker-save:
-        image: jumanjiman/puppetagent:${WERCKER_GIT_COMMIT:0:7}
-    - zvelo/docker-save:
-        image: jumanjiman/puppetagent:latest
-    - zvelo/docker-save:
-        image: jumanjiman/puppetboard:${WERCKER_GIT_COMMIT:0:7}
-    - zvelo/docker-save:
-        image: jumanjiman/puppetboard:latest
-    - zvelo/docker-save:
-        image: jumanjiman/puppetdb:${WERCKER_GIT_COMMIT:0:7}
-    - zvelo/docker-save:
-        image: jumanjiman/puppetdb:latest
-    - zvelo/docker-save:
-        image: jumanjiman/puppetmaster:${WERCKER_GIT_COMMIT:0:7}
-    - zvelo/docker-save:
-        image: jumanjiman/puppetmaster:latest
-    - zvelo/docker-save:
-        image: jumanjiman/autostager:${WERCKER_GIT_COMMIT:0:7}
-    - zvelo/docker-save:
-        image: jumanjiman/autostager:latest
-deploy:
-  steps:
-    - zvelo/docker-hub-push:
-        image: jumanjiman/puppetagent:${WERCKER_GIT_COMMIT:0:7}
-        email: ${email}
-        password: ${password}
-        username: jumanjiman
-    - zvelo/docker-hub-push:
-        image: jumanjiman/puppetagent:latest
-        email: ${email}
-        password: ${password}
-        username: jumanjiman
-    - zvelo/docker-hub-push:
-        image: jumanjiman/puppetboard:${WERCKER_GIT_COMMIT:0:7}
-        email: ${email}
-        password: ${password}
-        username: jumanjiman
-    - zvelo/docker-hub-push:
-        image: jumanjiman/puppetboard:latest
-        email: ${email}
-        password: ${password}
-        username: jumanjiman
-    - zvelo/docker-hub-push:
-        image: jumanjiman/puppetdb:${WERCKER_GIT_COMMIT:0:7}
-        email: ${email}
-        password: ${password}
-        username: jumanjiman
-    - zvelo/docker-hub-push:
-        image: jumanjiman/puppetdb:latest
-        email: ${email}
-        password: ${password}
-        username: jumanjiman
-    - zvelo/docker-hub-push:
-        image: jumanjiman/puppetmaster:${WERCKER_GIT_COMMIT:0:7}
-        email: ${email}
-        password: ${password}
-        username: jumanjiman
-    - zvelo/docker-hub-push:
-        image: jumanjiman/puppetmaster:latest
-        email: ${email}
-        password: ${password}
-        username: jumanjiman
-    - zvelo/docker-hub-push:
-        image: jumanjiman/autostager:${WERCKER_GIT_COMMIT:0:7}
-        email: ${email}
-        password: ${password}
-        username: jumanjiman
-    - zvelo/docker-hub-push:
-        image: jumanjiman/autostager:latest
-        email: ${email}
-        password: ${password}
-        username: jumanjiman

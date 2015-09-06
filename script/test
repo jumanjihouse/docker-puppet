@@ -6,19 +6,30 @@ source script/functions
 # Start clean.
 script/00_build_start.sh
 
+say Create fixtures data container.
+docker create \
+  --name fixtures-test \
+  jumanjiman/fixtures \
+  /bin/true || :
+
 say Start dns server so we can refer to test containers by name.
 #
 # Note: You must bind the DNS port to the management IP to avoid client error:
 # ;; reply from unexpected source: yyy.yyy.yyy.yyy#53, expected xxx.xxx.xxx.xxx#53
 #
 mgmt_ip=$(ip route get 8.8.8.8 | awk '/src/ {print $NF}')
+
+# Run the dns container with privileges so it can bind to port 53.
+# This allows us to query the container on its private IP on CircleCI.
+# You never want to do this in a real production container.
 docker run -d \
   --name named-test \
-  -p ${mgmt_ip}:53:2253 -p ${mgmt_ip}:53:2253/udp \
+  -u root \
   -e public_ipaddress=${mgmt_ip} \
   jumanjiman/named
 
 sleep 5
+dns_ip=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' named-test | tr -d '\r')
 docker logs named-test
 
 say Start the test containers.
@@ -28,22 +39,22 @@ say Start the test containers.
 docker run -d \
   --name db-test \
   -p 8080:8080 -p 8081:8081 \
-  --dns=${mgmt_ip} \
+  --dns=${dns_ip} \
   --hostname=puppetdb.inf.ise.com \
   jumanjiman/puppetdb
 
 docker run -d \
   --name master-test \
   -p 8140:8140 \
-  --dns=${mgmt_ip} \
+  --dns=${dns_ip} \
   --hostname=puppet.inf.ise.com \
-  -v $(pwd)/spec/fixtures:/opt/puppet/environments \
+  --volumes-from fixtures-test \
   jumanjiman/puppetmaster
 
 docker run -d \
   --name board-test \
   -p 80:80 \
-  --dns=${mgmt_ip} \
+  --dns=${dns_ip} \
   --hostname=puppetboard.inf.ise.com \
   jumanjiman/puppetboard
 
@@ -67,19 +78,24 @@ cmd='puppet agent -t --server=puppet.inf.ise.com --waitforcert=120'
 out=/tmp/docker.out
 rm -fr $out
 #
-docker run --rm -t --dns=${mgmt_ip} --hostname=$hostname jumanjiman/puppetagent $cmd | tee -a $out
+docker run --rm -t --dns=${dns_ip} --hostname=$hostname jumanjiman/puppetagent $cmd | tee -a $out
+
+say Look for specific messages
+grep 'foo is bar' $out
+grep 'bar is baz' $out
+grep 'baz is foo' $out
 grep 'Notice: Finished catalog run' $out || /bin/false
 
 say Query puppetboard for the node.
 #
 cmd="elinks -dump http://puppetboard.inf.ise.com/node/$hostname"
-docker run --rm -t --dns=${mgmt_ip} --hostname=$hostname jumanjiman/puppetagent $cmd | tee -a $out
+docker run --rm -t --dns=${dns_ip} --hostname=$hostname jumanjiman/puppetagent $cmd | tee -a $out
 
 say Did we find the host in puppetboard?
 #
 # Fail if we don't find our fqdn in the output.
 #
-grep "http://puppetboard.inf.ise.com/puppetboard/fact/fqdn/$hostname" $out && echo 'yes'
+grep "http://puppetboard.inf.ise.com/fact/fqdn/$hostname" $out && echo 'yes'
 grep "Internal Server Error" $out && /bin/false
 
 say Clean puppet cert for foo.example.com
@@ -89,7 +105,15 @@ curl -k -X PUT -H "Content-Type: text/pson" --data '{"desired_state":"revoked"}'
 curl -k -X DELETE -H "Accept: pson" ${url}
 echo
 
+# We configure master to log its output to console via `etc/puppet/config.ru'.
 say Check that "docker logs master-test" is meaningful.
 docker logs master-test 2>&1 | tee /tmp/master.log
-line_count=$(cat /tmp/master.log | wc -l)
-[[ $line_count -gt 100 ]] && echo OK || /bin/false
+sync
+sync
+
+say Look for specific messages
+grep "Signed certificate request for ${hostname}" /tmp/master.log
+grep "Compiled catalog for ${hostname} in environment production" /tmp/master.log
+grep "Removing file Puppet::SSL::Certificate.* ${hostname}" /tmp/master.log
+grep -i 'nginx entered running state' /tmp/master.log
+grep -i 'unicorn entered running state' /tmp/master.log
