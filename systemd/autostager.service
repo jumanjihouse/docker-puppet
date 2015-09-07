@@ -5,7 +5,7 @@ Requires=docker.service
 
 [Service]
 EnvironmentFile=-/etc/autostager.env
-ExecStartPre=/bin/bash -c '/usr/bin/docker inspect autostager.data &> /dev/null || /usr/bin/docker run --name autostager.data -v /opt/puppet/environments busybox /bin/true'
+ExecStartPre=/bin/bash -c '/usr/bin/docker inspect autostager.data &> /dev/null || /usr/bin/docker create --name autostager.data -v /opt/puppet/environments jumanjiman/autostager'
 ExecStartPre=/bin/bash -c '/usr/bin/docker inspect %n &> /dev/null && /usr/bin/docker rm %n || :'
 ExecStart=/usr/bin/docker run \
   --name %n \
