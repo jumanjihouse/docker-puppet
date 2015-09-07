@@ -3,7 +3,6 @@ Overview
 
 This repo contains scripts and source to build docker images for:
 
-* [![](https://badge.imagelayers.io/jumanjiman/puppetagent.svg)](https://imagelayers.io/?images=jumanjiman/puppetagent:latest 'Size') Puppet Agent
 * [![](https://badge.imagelayers.io/jumanjiman/autostager.svg)](https://imagelayers.io/?images=jumanjiman/autostager:latest 'Size') Puppet Autostager
 * [![](https://badge.imagelayers.io/jumanjiman/puppetmaster.svg)](https://imagelayers.io/?images=jumanjiman/puppetmaster:latest 'Size') Puppet Master
 * [![](https://badge.imagelayers.io/jumanjiman/puppetdb.svg)](https://imagelayers.io/?images=jumanjiman/puppetdb:latest 'Size') Puppet DB
@@ -17,6 +16,8 @@ to the docker hub. Each image has two tags:
 * DateTime of build plus commit hash of this repo at the time of build, and
 * "latest", which points to the latest commit hash tag.
 
+Note: See [jumanjihouse/puppet-on-coreos](https://github.com/jumanjihouse/puppet-on-coreos)
+for a Puppet Agent inside Docker.
 
 Deployment
 ----------
