@@ -1,13 +1,14 @@
-FROM gliderlabs/alpine:latest
+FROM alpine:3.2
 
-RUN apk-install \
+RUN apk upgrade --update-cache && apk add \
     ca-certificates \
     nginx \
     py-pip \
     supervisor \
     uwsgi \
     uwsgi-python \
-    ;
+    && \
+    rm -fr /var/cache/apk
 
 # All worker processes run as user "foo".
 RUN adduser -D foo
