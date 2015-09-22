@@ -1,0 +1,15 @@
+FROM alpine:3.2
+
+RUN apk upgrade --update-cache --available && \
+    apk add \
+      ca-certificates \
+      git \
+      py-pip \
+      && \
+    rm -fr /var/cache/apk
+
+# Build python package from master branch.
+RUN git clone https://github.com/puppet-community/puppetboard.git && \
+    cd puppetboard && \
+    sed -i 's/^VERSION = .*/VERSION = "master"/' setup.py && \
+    python setup.py sdist

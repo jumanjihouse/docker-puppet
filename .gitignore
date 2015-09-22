@@ -7,6 +7,8 @@ backup*
 Gemfile.lock
 jq
 keys
+puppetboard/files/puppetboard-*.tar.gz
+puppetboard/files/var/www/puppetboard/default_settings.py
 puppetboard/ssl/
 puppetdb/ssl/
 puppetmaster/ssl/

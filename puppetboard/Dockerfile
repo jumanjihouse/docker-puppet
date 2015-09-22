@@ -15,7 +15,7 @@ RUN adduser -D foo
 
 COPY files /
 
-RUN pip install puppetboard
+RUN pip install /puppetboard-master.tar.gz
 
 COPY ssl /var/lib/puppet/ssl/
 
