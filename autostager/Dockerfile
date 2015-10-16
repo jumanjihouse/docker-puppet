@@ -17,4 +17,4 @@ RUN mkdir -p /opt/puppet/environments && \
 VOLUME ["/opt/puppet/environments"]
 
 USER puppet
-CMD autostager
+ENTRYPOINT ["autostager"]
