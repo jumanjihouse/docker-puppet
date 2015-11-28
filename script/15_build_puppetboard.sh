@@ -21,9 +21,9 @@ docker rm -f puppetboard_build || :
 smitty docker create --name puppetboard_build puppetboard:build true
 
 # Grab the pip tarball.
-smitty docker cp puppetboard_build:/puppetboard/dist/puppetboard-master.tar.gz files/
+smitty docker cp puppetboard_build:/puppetboard/dist/puppetboard-4362f80db61b7ec5b360dfc055523eedb0d55413.tar.gz files/
 
-# Grab a copy of default_settings.py from master branch for local review if necessary.
+# Grab a copy of default_settings.py from branch for local review if necessary.
 smitty docker cp puppetboard_build:/puppetboard/puppetboard/default_settings.py files/var/www/puppetboard/
 
 # Build the runtime image.

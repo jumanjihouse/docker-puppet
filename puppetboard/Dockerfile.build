@@ -8,8 +8,9 @@ RUN apk upgrade --update-cache --available && \
       && \
     rm -fr /var/cache/apk
 
-# Build python package from master branch.
+# Build python package from branch.
 RUN git clone https://github.com/puppet-community/puppetboard.git && \
     cd puppetboard && \
-    sed -i 's/^VERSION = .*/VERSION = "master"/' setup.py && \
+    git checkout 4362f80db61b7ec5b360dfc055523eedb0d55413 && \
+    sed -i 's/^VERSION = .*/VERSION = "4362f80db61b7ec5b360dfc055523eedb0d55413"/' setup.py && \
     python setup.py sdist
