@@ -53,7 +53,7 @@ class { 'puppetdb':
   report_ttl         => '14d',
   gc_interval        => '60',
   java_args          => $java_args,
-  puppetdb_version   => '2.3.6-1.el6', # must match version in puppetmaster/Dockerfile
+  puppetdb_version   => '2.3.8-1.el6', # must match version in puppetmaster/Dockerfile
   require            => Ini_setting['certname'],
 }
 

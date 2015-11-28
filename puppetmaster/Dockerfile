@@ -3,7 +3,7 @@ FROM alpine:3.2
 ENV PUPPET_VERSION 3.8.4
 
 # Must match puppetdb container version.
-ENV PUPPETDB_VERSION 2.3.6
+ENV PUPPETDB_VERSION 2.3.8
 
 # Dependencies:
 #   shadow - puppet
