@@ -1,13 +1,15 @@
 # https://github.com/gliderlabs/docker-alpine
-FROM gliderlabs/alpine:latest
+FROM alpine:3.3
 
 # http://jumanjiman.github.io/
 MAINTAINER Paul Morgan <jumanjiman@gmail.com>
 
 ENV VERSION 0.0.10
 
-RUN apk-install ruby ca-certificates ruby-dev git perl
-RUN gem install --no-rdoc --no-ri "puppet-autostager:=${VERSION}"
+RUN apk add --no-cache ruby ca-certificates git perl && \
+    apk add --no-cache -t DEV alpine-sdk ruby-dev && \
+    gem install --no-rdoc --no-ri "puppet-autostager:=${VERSION}" && \
+    apk del DEV
 
 RUN adduser -D puppet
 
