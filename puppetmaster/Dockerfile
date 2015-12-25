@@ -1,4 +1,4 @@
-FROM alpine:3.2
+FROM alpine:3.3
 
 ENV PUPPET_VERSION 3.8.4
 
