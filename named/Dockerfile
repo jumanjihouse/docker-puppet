@@ -1,6 +1,6 @@
-FROM gliderlabs/alpine:latest
+FROM alpine:3.3
 
-RUN apk-install bind
+RUN apk add --no-cache bind
 COPY files /
 
 # Note: You must bind the DNS port to the management IP to avoid client error:
