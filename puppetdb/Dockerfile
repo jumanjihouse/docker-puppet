@@ -1,4 +1,22 @@
-FROM jumanjiman/puppetagent
+FROM centos:centos6
+
+# http://superuser.com/a/817649
+RUN sed -i '/excludedocs/d' /etc/rpm/macros.imgcreate; \
+    sed -i '/nodocs/d' /etc/yum.conf
+
+# Install EPEL yum repo.
+RUN yum -y install epel-release; yum clean all
+
+# Install puppet agent.
+RUN rpm -Uvh http://yum.puppetlabs.com/puppetlabs-release-el-6.noarch.rpm
+RUN yum -y install puppet tar; yum clean all
+
+# Install other useful stuff.
+ADD files/ /files/
+RUN puppet apply /files/install.pp
+
+# Remediate security after all packages are installed.
+RUN /files/remediate-oscap.sh
 
 # We need this before install.
 ADD ssl /var/lib/puppet/ssl
