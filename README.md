@@ -103,7 +103,7 @@ See [`CONTRIBUTING.md`](CONTRIBUTING.md) in this repo.
 License
 -------
 
-See LICENSE in this repo.
+See [`LICENSE`](LICENSE) in this repo.
 
 
 References
