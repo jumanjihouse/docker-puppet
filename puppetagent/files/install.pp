@@ -3,17 +3,10 @@ Package {
 }
 
 $packages = [
-  'bind-utils', # host and dig commands
-  'diffutils',
   'elinks',
-  'git',
   'net-tools',  # hostname command
-  'man',
-  'mlocate',
-  'patch',
   'redhat-lsb',
   'redhat-rpm-config',
-  'tree',
 ]
 
 package { $packages:
@@ -23,12 +16,6 @@ package { $packages:
 exec { 'updates':
   command => '/usr/bin/yum -y update && /usr/bin/yum clean all',
 } ->
-
-exec { '/usr/sbin/makewhatis':
-} ->
-
-exec { '/usr/bin/updatedb':
-}
 
 # If /etc/securetty exists and is zero-length,
 # then root cannot login directly.
