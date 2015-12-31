@@ -1,20 +1,38 @@
 Overview
 --------
 
-This repo contains scripts and source to build docker images for:
+PuppetMaster, PuppetDB, PuppetBoard, and Autostager
 
-* [![](https://badge.imagelayers.io/jumanjiman/autostager.svg)](https://imagelayers.io/?images=jumanjiman/autostager:latest 'Size') Puppet Autostager
-* [![](https://badge.imagelayers.io/jumanjiman/puppetmaster.svg)](https://imagelayers.io/?images=jumanjiman/puppetmaster:latest 'Size') Puppet Master
-* [![](https://badge.imagelayers.io/jumanjiman/puppetdb.svg)](https://imagelayers.io/?images=jumanjiman/puppetdb:latest 'Size') Puppet DB
-* [![](https://badge.imagelayers.io/jumanjiman/puppetboard.svg)](https://imagelayers.io/?images=jumanjiman/puppetboard:latest 'Size') PuppetBoard (dashboard)
+Source: https://github.com/jumanjihouse/docker-puppet
 
 Build status: [![Circle CI](https://circleci.com/gh/jumanjihouse/docker-puppet/tree/master.svg?style=svg&circle-token=ac0d72e97fa5b75ba775ba8d12994f09d036ae7b)](https://circleci.com/gh/jumanjihouse/docker-puppet/tree/master)
 
-The build and test harness also pushes these images
-to the docker hub. Each image has two tags:
+Docker hub:
 
-* DateTime of build plus commit hash of this repo at the time of build, and
-* "latest", which points to the latest commit hash tag.
+* https://hub.docker.com/r/jumanjiman/autostager/<br/>
+  [![Image Size](https://img.shields.io/imagelayers/image-size/jumanjiman/autostager/latest.svg)](https://imagelayers.io/?images=jumanjiman/autostager:latest 'View image size and layers')&nbsp;
+  [![Image Layers](https://img.shields.io/imagelayers/layers/jumanjiman/autostager/latest.svg)](https://imagelayers.io/?images=jumanjiman/autostager:latest 'View image size and layers')&nbsp;
+  [![Docker Registry](https://img.shields.io/docker/pulls/jumanjiman/autostager.svg)](https://registry.hub.docker.com/u/jumanjiman/autostager 'Docker Hub')&nbsp;
+
+* https://hub.docker.com/r/jumanjiman/puppetmaster/<br/>
+  [![Image Size](https://img.shields.io/imagelayers/image-size/jumanjiman/puppetmaster/latest.svg)](https://imagelayers.io/?images=jumanjiman/puppetmaster:latest 'View image size and layers')&nbsp;
+  [![Image Layers](https://img.shields.io/imagelayers/layers/jumanjiman/puppetmaster/latest.svg)](https://imagelayers.io/?images=jumanjiman/puppetmaster:latest 'View image size and layers')&nbsp;
+  [![Docker Registry](https://img.shields.io/docker/pulls/jumanjiman/puppetmaster.svg)](https://registry.hub.docker.com/u/jumanjiman/puppetmaster 'Docker Hub')&nbsp;
+
+* https://hub.docker.com/r/jumanjiman/puppetdb/<br/>
+  [![Image Size](https://img.shields.io/imagelayers/image-size/jumanjiman/puppetdb/latest.svg)](https://imagelayers.io/?images=jumanjiman/puppetdb:latest 'View image size and layers')&nbsp;
+  [![Image Layers](https://img.shields.io/imagelayers/layers/jumanjiman/puppetdb/latest.svg)](https://imagelayers.io/?images=jumanjiman/puppetdb:latest 'View image size and layers')&nbsp;
+  [![Docker Registry](https://img.shields.io/docker/pulls/jumanjiman/puppetdb.svg)](https://registry.hub.docker.com/u/jumanjiman/puppetdb 'Docker Hub')&nbsp;
+
+* https://hub.docker.com/r/jumanjiman/puppetboard/<br/>
+  [![Image Size](https://img.shields.io/imagelayers/image-size/jumanjiman/puppetboard/latest.svg)](https://imagelayers.io/?images=jumanjiman/puppetboard:latest 'View image size and layers')&nbsp;
+  [![Image Layers](https://img.shields.io/imagelayers/layers/jumanjiman/puppetboard/latest.svg)](https://imagelayers.io/?images=jumanjiman/puppetboard:latest 'View image size and layers')&nbsp;
+  [![Docker Registry](https://img.shields.io/docker/pulls/jumanjiman/puppetboard.svg)](https://registry.hub.docker.com/u/jumanjiman/puppetboard 'Docker Hub')&nbsp;
+
+Docker tags:
+
+* optimistic: `latest`
+* pessimistic: `${build-date}-git-${hash}`
 
 Note: See [jumanjihouse/puppet-on-coreos](https://github.com/jumanjihouse/puppet-on-coreos)
 for a Puppet Agent inside Docker.
