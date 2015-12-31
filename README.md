@@ -80,35 +80,6 @@ and **puppetboard.inf.ise.com**.
    You should see the handsome dashboard.
 
 
-Troubleshooting
----------------
-
-### Outside a container
-
-```bash
-# List active containers.
-docker ps
-
-# List all containers.
-docker ps -a
-
-# Follow logs from a container.
-docker logs -f <container-id>
-```
-
-
-### Inside a container
-
-```bash
-# This examples assumes the puppetmaster.service container.
-PID=$(docker inspect --format {{.State.Pid}} puppetmaster.service)
-sudo nsenter --target $PID --mount --uts --ipc --net --pid
-
-# Run various commands, then
-# Press CTRL-D to exit.
-```
-
-
 OVAL vulnerability scan
 -----------------------
 
@@ -212,7 +183,6 @@ References
 * https://docs.puppetlabs.com/
 * https://docs.docker.com/
 * https://coreos.com/docs/
-* https://github.com/jpetazzo/nsenter
 * https://github.com/puppet-community/puppetboard
 
 
