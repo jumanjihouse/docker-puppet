@@ -1,3 +1,0 @@
-[submodule "puppetagent/oval"]
-	path = puppetagent/oval
-	url = https://github.com/jumanjihouse/oval.git

@@ -8,9 +8,6 @@ RUN sed -i '/excludedocs/d' /etc/rpm/macros.imgcreate; \
 # Install EPEL yum repo.
 RUN yum -y install epel-release; yum clean all
 
-# Add oval vulnerability scan script(s).
-ADD oval /oval
-
 # Install puppet agent.
 RUN rpm -Uvh http://yum.puppetlabs.com/puppetlabs-release-el-6.noarch.rpm
 RUN yum -y install puppet tar; yum clean all

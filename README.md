@@ -80,20 +80,6 @@ and **puppetboard.inf.ise.com**.
    You should see the handsome dashboard.
 
 
-OVAL vulnerability scan
------------------------
-
-You can perform the scan inside a running container via:
-
-    /oval/vulnerability-scan.sh
-
-See https://github.com/jumanjihouse/oval for details.
-
-TODO: Implement some sort of CD system to poll the OVAL feed and rebuild
-the image on any update. https://github.com/jumanjiman/docker-gocd may be
-a candidate for the solution.
-
-
 Contributing
 ------------
 
