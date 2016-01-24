@@ -17,7 +17,7 @@ ENV PUPPETDB_VERSION 2.3.8
 #
 RUN echo http://dl-4.alpinelinux.org/alpine/edge/testing/ >> /etc/apk/repositories && \
     echo http://dl-4.alpinelinux.org/alpine/v3.1/main >> /etc/apk/repositories && \
-    apk add --update \
+    apk add --no-cache \
       ca-certificates \
       git \
       nginx \
@@ -29,7 +29,6 @@ RUN echo http://dl-4.alpinelinux.org/alpine/edge/testing/ >> /etc/apk/repositori
       supervisor \
       util-linux \
     && \
-    rm -f /var/cache/apk/* && \
     pip install supervisor-stdout
 
 # Install gems compatible with ruby < 2.2
