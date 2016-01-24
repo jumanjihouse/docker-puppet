@@ -118,5 +118,3 @@ say Look for specific messages
 grep "Signed certificate request for ${hostname}" /tmp/master.log
 grep "Compiled catalog for ${hostname} in environment production" /tmp/master.log
 grep "Removing file Puppet::SSL::Certificate.* ${hostname}" /tmp/master.log
-grep -i 'nginx entered running state' /tmp/master.log
-grep -i 'unicorn entered running state' /tmp/master.log

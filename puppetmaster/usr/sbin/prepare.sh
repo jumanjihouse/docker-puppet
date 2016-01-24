@@ -15,9 +15,23 @@ set -e
 # Setup paths for nginx to run with read-only root fs.
 mkdir -p /tmp/nginx/
 mkdir -p /var/log/nginx/
+mkdir -p /usr/share/nginx
 ln -fs /tmp /usr/uwsgi_temp
 ln -fs /tmp /usr/scgi_temp
-chown puppet:puppet /tmp/nginx /var/log/nginx /usr/uwsgi_temp /usr/scgi_temp
+chown puppet:puppet /tmp/nginx /var/log/nginx /usr/uwsgi_temp /usr/scgi_temp /usr/share/nginx
+
+# Setup paths for s6.
+# This enables to start s6 as an unprivileged user.
+s6_dirs="
+/etc/s6/.s6-svscan
+/etc/s6/nginx/supervise
+/etc/s6/nginx/event
+/etc/s6/unicorn/supervise
+"
+for dir in ${s6_dirs}; do
+  mkdir -p ${dir}
+  chown puppet:puppet ${dir}
+done
 
 # Ensure correct permissions for puppet dirs.
 mkdir -p /var/lib/puppet/ssl

@@ -24,14 +24,14 @@ RUN apk add --no-cache -X http://dl-4.alpinelinux.org/alpine/v3.1/main \
       git \
       nginx \
       openssl \
-      py-pip \
-      supervisor \
+      s6 \
+      s6-portable-utils \
       util-linux \
     && \
     apk add --no-cache -X http://dl-4.alpinelinux.org/alpine/edge/testing/ \
       shadow \
     && \
-    pip install supervisor-stdout
+    :
 
 # Install gems compatible with ruby < 2.2
 RUN gem install -N \
@@ -69,7 +69,7 @@ RUN /usr/sbin/prepare.sh
 RUN /usr/sbin/harden.sh
 
 # Do not persist anything in these dirs.
-VOLUME ["/var/lib/", "/var/log", "/tmp"]
+VOLUME ["/var/lib/", "/var/log", "/tmp", "/etc/s6"]
 
 # We use dynamic environments.
 VOLUME ["/opt/puppet/environments/"]
@@ -77,5 +77,4 @@ VOLUME ["/opt/puppet/environments/"]
 EXPOSE 8140
 
 USER puppet
-ENTRYPOINT ["supervisord"]
-CMD ["-u", "puppet"]
+ENTRYPOINT ["s6-svscan", "/etc/s6/"]
