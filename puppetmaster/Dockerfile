@@ -15,19 +15,21 @@ ENV PUPPETDB_VERSION 2.3.8
 #
 # http://wiki.alpinelinux.org/wiki/Alpine_Linux_package_management#Holding_a_specific_package_back
 #
-RUN echo http://dl-4.alpinelinux.org/alpine/edge/testing/ >> /etc/apk/repositories && \
-    echo http://dl-4.alpinelinux.org/alpine/v3.1/main >> /etc/apk/repositories && \
+RUN apk add --no-cache -X http://dl-4.alpinelinux.org/alpine/v3.1/main \
+      'ruby<2.2' \
+      ruby-unicorn \
+    && \
     apk add --no-cache \
       ca-certificates \
       git \
       nginx \
       openssl \
       py-pip \
-      'ruby<2.2' \
-      ruby-unicorn \
-      shadow \
       supervisor \
       util-linux \
+    && \
+    apk add --no-cache -X http://dl-4.alpinelinux.org/alpine/edge/testing/ \
+      shadow \
     && \
     pip install supervisor-stdout
 
