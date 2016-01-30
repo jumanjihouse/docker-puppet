@@ -23,7 +23,7 @@ RUN apk add --no-cache -X http://dl-4.alpinelinux.org/alpine/v3.1/main \
       ca-certificates \
       git \
       nginx \
-      openssl \
+      'openssl>=1.0.2f-r0' \
       s6 \
       s6-portable-utils \
       util-linux \
