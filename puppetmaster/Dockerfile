@@ -1,6 +1,6 @@
 FROM alpine:3.3
 
-ENV PUPPET_VERSION 3.8.6
+ENV PUPPET_VERSION 3.8.7
 
 # Must match puppetdb container version.
 ENV PUPPETDB_VERSION 2.3.8
