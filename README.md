@@ -10,23 +10,19 @@ Build status: [![Circle CI](https://circleci.com/gh/jumanjihouse/docker-puppet/t
 Docker hub:
 
 * https://hub.docker.com/r/jumanjiman/autostager/<br/>
-  [![Image Size](https://img.shields.io/imagelayers/image-size/jumanjiman/autostager/latest.svg)](https://imagelayers.io/?images=jumanjiman/autostager:latest 'View image size and layers')&nbsp;
-  [![Image Layers](https://img.shields.io/imagelayers/layers/jumanjiman/autostager/latest.svg)](https://imagelayers.io/?images=jumanjiman/autostager:latest 'View image size and layers')&nbsp;
+  [![](https://imagelayers.io/badge/jumanjiman/autostager:latest.svg)](https://imagelayers.io/?images=jumanjiman/autostager:latest 'View on imagelayers.io')&nbsp;
   [![Docker Registry](https://img.shields.io/docker/pulls/jumanjiman/autostager.svg)](https://registry.hub.docker.com/u/jumanjiman/autostager 'Docker Hub')&nbsp;
 
 * https://hub.docker.com/r/jumanjiman/puppetmaster/<br/>
-  [![Image Size](https://img.shields.io/imagelayers/image-size/jumanjiman/puppetmaster/latest.svg)](https://imagelayers.io/?images=jumanjiman/puppetmaster:latest 'View image size and layers')&nbsp;
-  [![Image Layers](https://img.shields.io/imagelayers/layers/jumanjiman/puppetmaster/latest.svg)](https://imagelayers.io/?images=jumanjiman/puppetmaster:latest 'View image size and layers')&nbsp;
+  [![](https://imagelayers.io/badge/jumanjiman/puppetmaster:latest.svg)](https://imagelayers.io/?images=jumanjiman/puppetmaster:latest 'View on imagelayers.io')&nbsp;
   [![Docker Registry](https://img.shields.io/docker/pulls/jumanjiman/puppetmaster.svg)](https://registry.hub.docker.com/u/jumanjiman/puppetmaster 'Docker Hub')&nbsp;
 
 * https://hub.docker.com/r/jumanjiman/puppetdb/<br/>
-  [![Image Size](https://img.shields.io/imagelayers/image-size/jumanjiman/puppetdb/latest.svg)](https://imagelayers.io/?images=jumanjiman/puppetdb:latest 'View image size and layers')&nbsp;
-  [![Image Layers](https://img.shields.io/imagelayers/layers/jumanjiman/puppetdb/latest.svg)](https://imagelayers.io/?images=jumanjiman/puppetdb:latest 'View image size and layers')&nbsp;
+  [![](https://imagelayers.io/badge/jumanjiman/puppetdb:latest.svg)](https://imagelayers.io/?images=jumanjiman/puppetdb:latest 'View on imagelayers.io')&nbsp;
   [![Docker Registry](https://img.shields.io/docker/pulls/jumanjiman/puppetdb.svg)](https://registry.hub.docker.com/u/jumanjiman/puppetdb 'Docker Hub')&nbsp;
 
 * https://hub.docker.com/r/jumanjiman/puppetboard/<br/>
-  [![Image Size](https://img.shields.io/imagelayers/image-size/jumanjiman/puppetboard/latest.svg)](https://imagelayers.io/?images=jumanjiman/puppetboard:latest 'View image size and layers')&nbsp;
-  [![Image Layers](https://img.shields.io/imagelayers/layers/jumanjiman/puppetboard/latest.svg)](https://imagelayers.io/?images=jumanjiman/puppetboard:latest 'View image size and layers')&nbsp;
+  [![](https://imagelayers.io/badge/jumanjiman/puppetboard:latest.svg)](https://imagelayers.io/?images=jumanjiman/puppetboard:latest 'View on imagelayers.io')&nbsp;
   [![Docker Registry](https://img.shields.io/docker/pulls/jumanjiman/puppetboard.svg)](https://registry.hub.docker.com/u/jumanjiman/puppetboard 'Docker Hub')&nbsp;
 
 Docker tags:
