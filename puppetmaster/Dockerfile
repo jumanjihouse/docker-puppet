@@ -28,7 +28,7 @@ RUN apk add --no-cache -X http://dl-4.alpinelinux.org/alpine/v3.1/main \
       s6-portable-utils \
       util-linux \
     && \
-    apk add --no-cache -X http://dl-4.alpinelinux.org/alpine/edge/testing/ \
+    apk add --no-cache -X http://dl-4.alpinelinux.org/alpine/edge/community/ \
       shadow \
     && \
     :
