@@ -23,12 +23,12 @@ RUN apk add --no-cache -X http://dl-4.alpinelinux.org/alpine/v3.1/main \
       ca-certificates \
       git \
       nginx \
-      'openssl>=1.0.2h-r0' \
+      'openssl>=1.0.2j-r0' \
       s6 \
       s6-portable-utils \
       util-linux \
     && \
-    apk add --no-cache -X http://dl-4.alpinelinux.org/alpine/edge/testing/ \
+    apk add --no-cache -X http://dl-4.alpinelinux.org/alpine/edge/community/ \
       shadow \
     && \
     :
@@ -37,7 +37,7 @@ RUN apk add --no-cache -X http://dl-4.alpinelinux.org/alpine/v3.1/main \
 RUN gem install -N \
       etcd \
       facter \
-      rack \
+      rack:=1.6.4 \
       puppet:=${PUPPET_VERSION} \
     && \
     rm -fr /root/.gem*
