@@ -13,41 +13,16 @@ script/00_build_start.sh
 say Create fixtures data container.
 docker-compose create fixtures
 
-say Start dns server so we can refer to test containers by name.
-#
-# Note: You must bind the DNS port to the management IP to avoid client error:
-# ;; reply from unexpected source: yyy.yyy.yyy.yyy#53, expected xxx.xxx.xxx.xxx#53
-#
-mgmt_ip=$(ip route get 8.8.8.8 | awk '/src/ {print $NF}')
-
-# Run the dns container with privileges so it can bind to port 53.
-# This allows us to query the container on its private IP on CircleCI.
-# You never want to do this in a real production container.
-docker run -d \
-  --name named-test \
-  -u root \
-  -e public_ipaddress=${mgmt_ip} \
-  jumanjiman/named
-
-sleep 5
-dns_ip=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' named-test | tr -d '\r')
-docker logs named-test
-
 say Start the test containers.
-#
-# For each container, use the DNS server we started above for name resolution.
-#
 docker run -d \
   --name db-test \
   -p 8080:8080 -p 8081:8081 \
-  --dns=${dns_ip} \
   --hostname=puppetdb.inf.ise.com \
   jumanjiman/puppetdb
 
 docker run -d \
   --name master-test \
   -p 8140:8140 \
-  --dns=${dns_ip} \
   --hostname=puppet.inf.ise.com \
   --volumes-from fixtures-test \
   jumanjiman/puppetmaster
@@ -55,7 +30,6 @@ docker run -d \
 docker run -d \
   --name board-test \
   -p 80:80 \
-  --dns=${dns_ip} \
   --hostname=puppetboard.inf.ise.com \
   jumanjiman/puppetboard
 
@@ -79,7 +53,7 @@ cmd='agent -t --server=puppet.inf.ise.com --waitforcert=120'
 out=/tmp/docker.out
 rm -fr $out
 #
-docker run --rm -t --dns=${dns_ip} --hostname=$hostname jumanjiman/puppet $cmd | tee -a $out
+docker run --rm -t --hostname=$hostname jumanjiman/puppet $cmd | tee -a $out
 
 say Look for specific messages
 grep 'foo is bar' $out
@@ -90,7 +64,7 @@ grep 'Notice: Finished catalog run' $out || /bin/false
 say Query puppetboard for the node.
 #
 cmd="-dump http://puppetboard.inf.ise.com/node/$hostname"
-docker run --rm -t --dns=${dns_ip} --hostname=$hostname --entrypoint elinks jumanjiman/puppetdb $cmd | tee -a $out
+docker run --rm -t --hostname=$hostname --entrypoint elinks jumanjiman/puppetdb $cmd | tee -a $out
 
 say Did we find the host in puppetboard?
 #
