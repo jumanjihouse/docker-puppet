@@ -12,5 +12,5 @@ late_tag="${base_tag}:latest"
 pushd puppetdb
 cp -r ../ssl .
 smitty docker build --rm -t $hash_tag . 2>&1 | tee /tmp/build-puppetdb.out
-smitty docker tag -f $hash_tag $late_tag
+smitty docker tag $hash_tag $late_tag
 popd

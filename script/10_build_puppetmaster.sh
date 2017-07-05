@@ -13,5 +13,5 @@ pushd puppetmaster
 mkdir -p var/lib/puppet/
 cp -r ../ssl var/lib/puppet/ssl
 smitty docker build --rm -t $hash_tag . 2>&1 | tee /tmp/build-puppetmaster.out
-smitty docker tag -f $hash_tag $late_tag
+smitty docker tag $hash_tag $late_tag
 popd

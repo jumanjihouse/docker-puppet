@@ -65,7 +65,7 @@ a [topic branch](http://progit.org/book/ch3-4.html) of your fork.
 
 You can run tests **locally** via:
 
-    script/build.sh && script/test
+    ci/build && ci/test
 
 Trigger a rebuild-and-test cycle to get latest package updates:
 

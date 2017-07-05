@@ -15,3 +15,4 @@ puppetmaster/ssl/
 puppetmaster/var/lib/puppet/ssl/
 etcd-v*-linux-amd64.tar.gz
 etcd-v*-linux-amd64/
+ci/vars

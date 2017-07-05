@@ -29,5 +29,5 @@ smitty docker cp puppetboard_build:/puppetboard/puppetboard/default_settings.py 
 # Build the runtime image.
 smitty docker build --rm -t $hash_tag -f Dockerfile .
 ) 2>&1 | tee /tmp/build-puppetboard.out
-smitty docker tag -f $hash_tag $late_tag
+smitty docker tag $hash_tag $late_tag
 popd
