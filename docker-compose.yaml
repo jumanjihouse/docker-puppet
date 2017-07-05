@@ -1,0 +1,35 @@
+version: '2.1'
+
+networks:
+  testnet:
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.254.0/24
+          gateway: 192.168.254.1
+
+services:
+  etcd:
+    image: jumanjiman/etcd:3.2.1-r0_20170705T1558_git_3560ca1
+    ports:
+      - "2379:2379/tcp"
+    read_only: true
+    cap_drop:
+      - all
+    pids_limit: 10
+    cpu_shares: 512
+    mem_limit: 64M
+    shm_size: 32M
+    stdin_open: true
+    tty: true
+    networks:
+      testnet:
+        ipv4_address: 192.168.254.254
+
+  curl:
+    image: jumanjiman/cci:20170707T1122-git-157990b
+    entrypoint: curl
+    networks:
+      testnet:

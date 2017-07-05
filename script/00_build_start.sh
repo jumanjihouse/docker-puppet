@@ -11,21 +11,14 @@ done
 smitty docker rm puppet-ca
 
 # Download and start etcd.
-smitty curl -L -O -sS https://github.com/coreos/etcd/releases/download/v0.4.6/etcd-v0.4.6-linux-amd64.tar.gz
-smitty tar -zxf etcd-v0.4.6-linux-amd64.tar.gz
-smitty ls -l etcd-v0.4.6-linux-amd64
-echo start etcd
-ps -ef | grep '[e]tcd' || nohup etcd-v0.4.6-linux-amd64/etcd &
-sleep 5
-ps -ef | grep '[e]tcd'
-ss -tulpn || netstat -tulpn
+smitty docker-compose up -d etcd
 
 # Publish two simple key/value pairs.
-smitty curl -L -X PUT http://127.0.0.1:4001/v2/keys/configuration/common/bar -d value="baz"
-smitty curl -L -X PUT http://127.0.0.1:4001/v2/keys/configuration/common/baz -d value="baz"
+smitty docker-compose run curl -L -X PUT http://192.168.254.254:2379/v2/keys/configuration/common/bar -d value="baz"
+smitty docker-compose run curl -L -X PUT http://192.168.254.254:2379/v2/keys/configuration/common/baz -d value="baz"
 
 # Publish key "hash" with a nested hash as its value.
-smitty curl -L -X PUT http://127.0.0.1:4001/v2/keys/configuration/common/hash \
+smitty docker-compose run curl -L -X PUT http://192.168.254.254:2379/v2/keys/configuration/common/hash \
   -d value='{"nested_hash":{"msg_a":"Bob Schneider","msg_b":"Tarantula!"}}'
 echo
 
