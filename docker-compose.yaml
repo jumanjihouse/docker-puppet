@@ -33,3 +33,8 @@ services:
     entrypoint: curl
     networks:
       testnet:
+
+  fixtures:
+    image: jumanjiman/fixtures
+    build:
+      context: spec/fixtures/

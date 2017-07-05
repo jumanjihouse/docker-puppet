@@ -11,10 +11,7 @@ docker pull jumanjiman/puppet
 script/00_build_start.sh
 
 say Create fixtures data container.
-docker create \
-  --name fixtures-test \
-  jumanjiman/fixtures \
-  /bin/true || :
+docker-compose create fixtures
 
 say Start dns server so we can refer to test containers by name.
 #
