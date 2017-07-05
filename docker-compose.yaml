@@ -38,3 +38,18 @@ services:
     image: jumanjiman/fixtures
     build:
       context: spec/fixtures/
+
+  puppetdb:
+    image: jumanjiman/puppetdb
+    build:
+      context: puppetdb/
+    hostname: puppetdb.inf.ise.com
+    mem_limit: 512M
+    networks:
+      testnet:
+        ipv4_address: 192.168.254.253
+        aliases:
+          - puppetdb.inf.ise.com
+    ports:
+      - "8080:8080/tcp"
+      - "8081:8081/tcp"

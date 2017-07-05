@@ -14,11 +14,7 @@ say Create fixtures data container.
 docker-compose create fixtures
 
 say Start the test containers.
-docker run -d \
-  --name db-test \
-  -p 8080:8080 -p 8081:8081 \
-  --hostname=puppetdb.inf.ise.com \
-  jumanjiman/puppetdb
+docker-compose up -d puppetdb
 
 docker run -d \
   --name master-test \
@@ -41,7 +37,7 @@ for x in $(seq 1 60); do echo -n "."; sleep 1; done
 echo
 
 say Show puppetdb logs
-docker logs db-test
+docker-compose logs puppetdb
 
 say Run puppet agent against master.
 #
