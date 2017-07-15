@@ -57,9 +57,9 @@ grep "Internal Server Error" $out && /bin/false
 
 say Clean puppet cert for foo.example.com
 #
-url="https://${mgmt_ip}:8140/production/certificate_status/${hostname}"
-curl -k -X PUT -H "Content-Type: text/pson" --data '{"desired_state":"revoked"}' ${url}
-curl -k -X DELETE -H "Accept: pson" ${url}
+url="https://puppet.inf.ise.com:8140/production/certificate_status/${hostname}"
+docker-compose run curl -k -X PUT -H "Content-Type: text/pson" --data '{"desired_state":"revoked"}' ${url}
+docker-compose run curl -k -X DELETE -H "Accept: pson" ${url}
 echo
 
 # We configure master to log its output to console via `etc/puppet/config.ru'.
