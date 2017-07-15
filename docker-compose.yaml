@@ -92,3 +92,13 @@ services:
           - puppetboard.inf.ise.com
     ports:
       - "80:80/tcp"
+
+  autostager:
+    image: jumanjiman/autostager
+    build:
+      context: autostager/
+    hostname: autostager.inf.ise.com
+    mem_limit: 64M
+    networks:
+      testnet:
+        ipv4_address: 192.168.254.250
