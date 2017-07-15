@@ -1,13 +1,18 @@
 #!/bin/bash
 # vim: set sw=2 ts=2 ai et:
 set -e
+set -u
 
 if [[ $# -lt 1 ]]; then
   echo "ERR: you must pass 1 or more tags as arguments" >&2
   exit 1
 fi
 
-tags=$@
+. ci/vars
+tags="
+${TAG}
+latest
+"
 
 # The names of the images as built.
 build_names="
@@ -22,7 +27,7 @@ smitty() {
   eval $@
 }
 
-docker login -e $ROBOT_EMAIL -u $ROBOT_USER -p $ROBOT_PASS
+docker login -u $ROBOT_USER -p $ROBOT_PASS
 
 for build_name in $build_names; do
   echo "===== ${build_name} ====="
@@ -33,7 +38,7 @@ for build_name in $build_names; do
     docker images | grep ${build_name}
 
     # Create a new tag.
-    smitty docker tag -f ${build_name} ${tagged_name}
+    smitty docker tag ${build_name} ${tagged_name}
 
     # Ensure the tagged image exists.
     docker images | grep ${build_name} | grep ${tag}

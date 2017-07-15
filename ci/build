@@ -1,0 +1,39 @@
+#!/bin/bash
+set -e
+set -u
+set -o noclobber
+
+rm -f ci/vars || :
+cat > ci/vars <<EOF
+export BUILD_DATE=$(date +%Y%m%dT%H%M)
+export VCS_REF=$(git rev-parse --short HEAD)
+export TAG=\${BUILD_DATE}-git-\${VCS_REF}
+EOF
+. ci/vars
+
+source script/functions
+
+rm -f /tmp/start
+date > /tmp/start
+
+cp -r ssl puppetboard/
+cp -r ssl puppetdb/
+mkdir -p puppetmaster/var/lib/puppet/
+cp -r ssl puppetmaster/var/lib/puppet/ssl
+
+# Download and start etcd.
+docker-compose up -d etcd
+
+docker-compose build fixtures
+docker-compose build puppetdb
+docker-compose build puppetmaster
+docker-compose build puppetboard_build
+docker-compose create puppetboard_build
+docker cp \
+  puppetboard_build:/puppetboard/dist/puppetboard-4362f80db61b7ec5b360dfc055523eedb0d55413.tar.gz \
+  puppetboard/files/
+docker-compose build puppetboard
+docker-compose build autostager
+
+rm -f /tmp/stop
+date > /tmp/stop

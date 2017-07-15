@@ -1,0 +1,123 @@
+version: '2.1'
+
+networks:
+  testnet:
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.254.0/24
+          gateway: 192.168.254.1
+
+services:
+  etcd:
+    image: jumanjiman/etcd:3.2.1-r0_20170705T1558_git_3560ca1
+    ports:
+      - "2379:2379/tcp"
+    read_only: true
+    cap_drop:
+      - all
+    pids_limit: 10
+    cpu_shares: 512
+    mem_limit: 64M
+    shm_size: 32M
+    stdin_open: true
+    tty: true
+    networks:
+      testnet:
+        ipv4_address: 192.168.254.254
+
+  curl:
+    image: jumanjiman/cci:20170707T1122-git-157990b
+    entrypoint: curl
+    networks:
+      testnet:
+
+  fixtures:
+    image: jumanjiman/fixtures
+    build:
+      context: spec/fixtures/
+
+  puppetdb:
+    image: jumanjiman/puppetdb
+    build:
+      context: puppetdb/
+    hostname: puppetdb.inf.ise.com
+    mem_limit: 512M
+    networks:
+      testnet:
+        ipv4_address: 192.168.254.253
+        aliases:
+          - puppetdb.inf.ise.com
+    ports:
+      - "8080:8080/tcp"
+      - "8081:8081/tcp"
+
+  puppetmaster:
+    image: jumanjiman/puppetmaster
+    build:
+      context: puppetmaster/
+    hostname: puppet.inf.ise.com
+    mem_limit: 1G
+    networks:
+      testnet:
+        ipv4_address: 192.168.254.252
+        aliases:
+          - puppet.inf.ise.com
+    ports:
+      - "8140:8140/tcp"
+    volumes_from:
+      - fixtures:ro
+
+  puppetboard_build:
+    image: jumanjiman/puppetboard:build
+    container_name: puppetboard_build
+    build:
+      context: puppetboard/
+      dockerfile: Dockerfile.build
+    networks:
+      testnet:
+
+  puppetboard:
+    image: jumanjiman/puppetboard
+    build:
+      context: puppetboard/
+    hostname: puppetboard.inf.ise.com
+    mem_limit: 64M
+    networks:
+      testnet:
+        ipv4_address: 192.168.254.251
+        aliases:
+          - puppetboard.inf.ise.com
+    ports:
+      - "80:80/tcp"
+    tmpfs:
+      - /run/nginx/
+
+  autostager:
+    image: jumanjiman/autostager
+    build:
+      context: autostager/
+    hostname: autostager.inf.ise.com
+    mem_limit: 64M
+    networks:
+      testnet:
+        ipv4_address: 192.168.254.250
+
+  puppetagent:
+    image: jumanjiman/puppet
+    hostname: foo.example.com
+    entrypoint: puppet
+    command: agent -t --server=puppet.inf.ise.com --waitforcert=120
+    stdin_open: false
+    networks:
+      testnet:
+        ipv4_address: 192.168.254.249
+
+  elinks:
+    image: jumanjiman/puppetdb
+    networks:
+      testnet:
+    entrypoint: elinks
+    command: -dump http://puppetboard.inf.ise.com/node/foo.example.com

@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+set -e
+set -u
+
+source script/functions
+
+ci/clean
+
+docker-compose up -d etcd
+
+# Publish two simple key/value pairs.
+docker-compose run curl -L -X PUT http://etcd:2379/v2/keys/configuration/common/bar -d value="baz"
+docker-compose run curl -L -X PUT http://etcd:2379/v2/keys/configuration/common/baz -d value="baz"
+
+# Publish key "hash" with a nested hash as its value.
+docker-compose run curl -L -X PUT http://etcd:2379/v2/keys/configuration/common/hash \
+  -d value='{"nested_hash":{"msg_a":"Bob Schneider","msg_b":"Tarantula!"}}'
+echo
+
+say Create fixtures data container.
+docker-compose create fixtures
+
+say Start the test containers.
+docker-compose up -d puppetdb
+docker-compose up -d puppetmaster
+docker-compose up -d puppetboard
+
+say Sleep 2 minutes for puppetdb to become ready.
+#
+for x in $(seq 1 60); do echo -n "."; sleep 1; done
+echo
+for x in $(seq 1 60); do echo -n "."; sleep 1; done
+echo
+
+say Show puppetdb logs
+docker-compose logs puppetdb
+
+say Run puppet agent against master.
+#
+# Do not use `-i' or else docker waits on stdin and
+# does not exit until you press a key.
+#
+hostname=foo.example.com
+out=/tmp/docker.out
+rm -fr $out
+docker-compose run puppetagent | tee -a ${out}
+
+say Look for specific messages
+grep 'foo is bar' $out
+grep 'bar is baz' $out
+grep 'baz is foo' $out
+grep 'Notice: Finished catalog run' $out || /bin/false
+
+say Query puppetboard for the node.
+#
+docker-compose run elinks | tee -a $out
+
+say Did we find the host in puppetboard?
+#
+# Fail if we don't find our fqdn in the output.
+#
+grep "http://puppetboard.inf.ise.com/fact/fqdn/$hostname" $out && echo 'yes'
+grep "Internal Server Error" $out && /bin/false
+
+say Clean puppet cert for foo.example.com
+#
+url="https://puppet.inf.ise.com:8140/production/certificate_status/${hostname}"
+docker-compose run curl -k -X PUT -H "Content-Type: text/pson" --data '{"desired_state":"revoked"}' ${url}
+docker-compose run curl -k -X DELETE -H "Accept: pson" ${url}
+echo
+
+# We configure master to log its output to console via `etc/puppet/config.ru'.
+say Check that "docker logs master-test" is meaningful.
+docker-compose logs puppetmaster 2>&1 | tee /tmp/master.log
+sync
+sync
+
+say Look for specific messages
+grep "Signed certificate request for ${hostname}" /tmp/master.log
+grep "Compiled catalog for ${hostname} in environment production" /tmp/master.log
+grep "Removing file Puppet::SSL::Certificate.* ${hostname}" /tmp/master.log

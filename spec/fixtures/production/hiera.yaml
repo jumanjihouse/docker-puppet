@@ -12,7 +12,7 @@
 # For hiera-etcd backend.
 # https://github.com/garethr/hiera-etcd
 :http:
-  :host: ETCD_IP
-  :port: 4001
+  :host: 192.168.254.254
+  :port: 2379
   :paths:
     - /configuration/common
