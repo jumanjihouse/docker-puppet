@@ -34,11 +34,9 @@ say Run puppet agent against master.
 # does not exit until you press a key.
 #
 hostname=foo.example.com
-cmd='agent -t --server=puppet.inf.ise.com --waitforcert=120'
 out=/tmp/docker.out
 rm -fr $out
-#
-docker run --rm -t --hostname=$hostname jumanjiman/puppet $cmd | tee -a $out
+docker-compose run puppetagent | tee -a ${out}
 
 say Look for specific messages
 grep 'foo is bar' $out

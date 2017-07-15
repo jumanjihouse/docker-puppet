@@ -102,3 +102,13 @@ services:
     networks:
       testnet:
         ipv4_address: 192.168.254.250
+
+  puppetagent:
+    image: jumanjiman/puppet
+    hostname: foo.example.com
+    entrypoint: puppet
+    command: agent -t --server=puppet.inf.ise.com --waitforcert=120
+    stdin_open: false
+    networks:
+      testnet:
+        ipv4_address: 192.168.254.249
