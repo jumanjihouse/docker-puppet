@@ -4,11 +4,18 @@ set -u
 
 source script/functions
 
-# https://github.com/jumanjihouse/puppet-on-coreos
-docker pull jumanjiman/puppet
+ci/clean
 
-# Start clean.
-script/00_build_start.sh
+docker-compose up -d etcd
+
+# Publish two simple key/value pairs.
+docker-compose run curl -L -X PUT http://etcd:2379/v2/keys/configuration/common/bar -d value="baz"
+docker-compose run curl -L -X PUT http://etcd:2379/v2/keys/configuration/common/baz -d value="baz"
+
+# Publish key "hash" with a nested hash as its value.
+docker-compose run curl -L -X PUT http://etcd:2379/v2/keys/configuration/common/hash \
+  -d value='{"nested_hash":{"msg_a":"Bob Schneider","msg_b":"Tarantula!"}}'
+echo
 
 say Create fixtures data container.
 docker-compose create fixtures
