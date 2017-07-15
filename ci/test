@@ -16,12 +16,7 @@ docker-compose create fixtures
 say Start the test containers.
 docker-compose up -d puppetdb
 docker-compose up -d puppetmaster
-
-docker run -d \
-  --name board-test \
-  -p 80:80 \
-  --hostname=puppetboard.inf.ise.com \
-  jumanjiman/puppetboard
+docker-compose up -d puppetboard
 
 say Sleep 2 minutes for puppetdb to become ready.
 #

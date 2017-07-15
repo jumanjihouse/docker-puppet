@@ -69,3 +69,26 @@ services:
       - "8140:8140/tcp"
     volumes_from:
       - fixtures:ro
+
+  puppetboard_build:
+    image: jumanjiman/puppetboard:build
+    container_name: puppetboard_build
+    build:
+      context: puppetboard/
+      dockerfile: Dockerfile.build
+    networks:
+      testnet:
+
+  puppetboard:
+    image: jumanjiman/puppetboard
+    build:
+      context: puppetboard/
+    hostname: puppetboard.inf.ise.com
+    mem_limit: 64M
+    networks:
+      testnet:
+        ipv4_address: 192.168.254.251
+        aliases:
+          - puppetboard.inf.ise.com
+    ports:
+      - "80:80/tcp"

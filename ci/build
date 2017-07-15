@@ -16,6 +16,7 @@ source script/functions
 rm -f /tmp/start
 date > /tmp/start
 
+cp -r ssl puppetboard/
 cp -r ssl puppetdb/
 mkdir -p puppetmaster/var/lib/puppet/
 cp -r ssl puppetmaster/var/lib/puppet/ssl
@@ -23,6 +24,12 @@ cp -r ssl puppetmaster/var/lib/puppet/ssl
 docker-compose build fixtures
 docker-compose build puppetdb
 docker-compose build puppetmaster
+docker-compose build puppetboard_build
+docker-compose create puppetboard_build
+docker cp \
+  puppetboard_build:/puppetboard/dist/puppetboard-4362f80db61b7ec5b360dfc055523eedb0d55413.tar.gz \
+  puppetboard/files/
+docker-compose build puppetboard
 
 say Run build scripts in order.
 for file in script\/[0-9][0-9]_build_*.sh; do
