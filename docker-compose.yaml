@@ -114,3 +114,10 @@ services:
     networks:
       testnet:
         ipv4_address: 192.168.254.249
+
+  elinks:
+    image: jumanjiman/puppetdb
+    networks:
+      testnet:
+    entrypoint: elinks
+    command: -dump http://puppetboard.inf.ise.com/node/foo.example.com

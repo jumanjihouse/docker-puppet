@@ -46,8 +46,7 @@ grep 'Notice: Finished catalog run' $out || /bin/false
 
 say Query puppetboard for the node.
 #
-cmd="-dump http://puppetboard.inf.ise.com/node/$hostname"
-docker run --rm -t --hostname=$hostname --entrypoint elinks jumanjiman/puppetdb $cmd | tee -a $out
+docker-compose run elinks | tee -a $out
 
 say Did we find the host in puppetboard?
 #
