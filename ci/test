@@ -15,13 +15,7 @@ docker-compose create fixtures
 
 say Start the test containers.
 docker-compose up -d puppetdb
-
-docker run -d \
-  --name master-test \
-  -p 8140:8140 \
-  --hostname=puppet.inf.ise.com \
-  --volumes-from fixtures-test \
-  jumanjiman/puppetmaster
+docker-compose up -d puppetmaster
 
 docker run -d \
   --name board-test \
@@ -78,7 +72,7 @@ echo
 
 # We configure master to log its output to console via `etc/puppet/config.ru'.
 say Check that "docker logs master-test" is meaningful.
-docker logs master-test 2>&1 | tee /tmp/master.log
+docker-compose logs puppetmaster 2>&1 | tee /tmp/master.log
 sync
 sync
 

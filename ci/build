@@ -17,9 +17,12 @@ rm -f /tmp/start
 date > /tmp/start
 
 cp -r ssl puppetdb/
+mkdir -p puppetmaster/var/lib/puppet/
+cp -r ssl puppetmaster/var/lib/puppet/ssl
 
 docker-compose build fixtures
 docker-compose build puppetdb
+docker-compose build puppetmaster
 
 say Run build scripts in order.
 for file in script\/[0-9][0-9]_build_*.sh; do
