@@ -10,9 +10,6 @@ for c in board-test db-test master-test named-test; do
 done
 smitty docker rm puppet-ca
 
-# Download and start etcd.
-smitty docker-compose up -d etcd
-
 # Publish two simple key/value pairs.
 smitty docker-compose run curl -L -X PUT http://192.168.254.254:2379/v2/keys/configuration/common/bar -d value="baz"
 smitty docker-compose run curl -L -X PUT http://192.168.254.254:2379/v2/keys/configuration/common/baz -d value="baz"

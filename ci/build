@@ -21,6 +21,9 @@ cp -r ssl puppetdb/
 mkdir -p puppetmaster/var/lib/puppet/
 cp -r ssl puppetmaster/var/lib/puppet/ssl
 
+# Download and start etcd.
+docker-compose up -d etcd
+
 docker-compose build fixtures
 docker-compose build puppetdb
 docker-compose build puppetmaster
