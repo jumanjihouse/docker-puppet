@@ -92,6 +92,8 @@ services:
           - puppetboard.inf.ise.com
     ports:
       - "80:80/tcp"
+    tmpfs:
+      - /run/nginx/
 
   autostager:
     image: jumanjiman/autostager
