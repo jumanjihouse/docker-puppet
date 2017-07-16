@@ -69,6 +69,9 @@ services:
       - "8140:8140/tcp"
     volumes_from:
       - fixtures:ro
+    environment:
+      - UNICORN_WORKER_PROCESSES=12
+      - NGINX_WORKER_PROCESSES=2
 
   puppetboard_build:
     image: jumanjiman/puppetboard:build

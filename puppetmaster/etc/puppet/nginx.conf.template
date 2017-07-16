@@ -5,7 +5,7 @@ pid /dev/null;
 error_log stderr warn;
 
 # To-do: configure this dynamically based on CPU count.
-worker_processes 20;
+worker_processes ${NGINX_WORKER_PROCESSES};
 
 events {
     worker_connections  1024;

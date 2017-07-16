@@ -21,6 +21,7 @@ RUN apk add --no-cache -X http://dl-4.alpinelinux.org/alpine/v3.1/main \
     && \
     apk add --no-cache \
       ca-certificates \
+      gettext \
       git \
       nginx \
       'openssl>=1.0.2j-r0' \
