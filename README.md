@@ -95,10 +95,3 @@ References
 * https://docs.docker.com/
 * https://coreos.com/docs/
 * https://github.com/puppet-community/puppetboard
-
-
-:warning: Warning
------------------
-
-Use CoreOS to build this since CoreOS uses BTRFS, not AUFS.
-See https://github.com/dotcloud/docker/issues/6980 for relevant bug.
