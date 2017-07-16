@@ -47,3 +47,8 @@ for build_name in $build_names; do
 done
 
 docker logout
+
+curl -X POST 'https://hooks.microbadger.com/images/jumanjiman/autostager/muTosD8RrF9G8IB6BSEeyEj_-aM='
+curl -X POST 'https://hooks.microbadger.com/images/jumanjiman/puppetmaster/7zWy4DzQxoPDTcEZIAhJCRSi9_U='
+curl -X POST 'https://hooks.microbadger.com/images/jumanjiman/puppetdb/Xb50Cdv5CyZO5-AwenAillWwT_o='
+curl -X POST 'https://hooks.microbadger.com/images/jumanjiman/puppetboard/8ZaNNf8dPD-mn7xh8v18TLigYmM='
