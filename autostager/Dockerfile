@@ -1,5 +1,5 @@
 # https://github.com/gliderlabs/docker-alpine
-FROM alpine:3.4
+FROM alpine:3.6
 
 # http://jumanjiman.github.io/
 MAINTAINER Paul Morgan <jumanjiman@gmail.com>

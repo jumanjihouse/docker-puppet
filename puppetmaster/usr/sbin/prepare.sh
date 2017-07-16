@@ -43,8 +43,10 @@ chmod 0755 /var/log/puppet
 chown -R puppet:puppet /var/lib/puppet/ssl
 
 # nginx buffers client request body here.
-mkdir -p /var/lib/nginx/tmp/client_body
+mkdir -p /var/lib/nginx/
 chown -R puppet:puppet /var/lib/nginx
+mkdir -p /var/tmp/nginx/
+chown -R puppet:puppet /var/tmp/nginx
 
 #cp -f /usr/lib/ruby/gems/2.1.0/gems/puppet-${PUPPET_VERSION}/ext/rack/config.ru /etc/puppet/
 

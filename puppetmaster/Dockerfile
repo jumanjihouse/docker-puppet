@@ -1,4 +1,4 @@
-FROM alpine:3.4
+FROM alpine:3.6
 
 ENV PUPPET_VERSION 3.8.7
 
@@ -69,7 +69,7 @@ RUN /usr/sbin/prepare.sh
 RUN /usr/sbin/harden.sh
 
 # Do not persist anything in these dirs.
-VOLUME ["/var/lib/", "/var/log", "/tmp", "/etc/s6"]
+VOLUME ["/var/lib/", "/var/log", "/tmp", "/etc/s6", "/var/tmp/nginx/"]
 
 # We use dynamic environments.
 VOLUME ["/opt/puppet/environments/"]
