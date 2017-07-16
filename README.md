@@ -10,20 +10,20 @@ Build status: [![Circle CI](https://circleci.com/gh/jumanjihouse/docker-puppet/t
 Docker hub:
 
 * https://hub.docker.com/r/jumanjiman/autostager/<br/>
-  [![](https://imagelayers.io/badge/jumanjiman/autostager:latest.svg)](https://imagelayers.io/?images=jumanjiman/autostager:latest 'View on imagelayers.io')&nbsp;
-  [![Docker Registry](https://img.shields.io/docker/pulls/jumanjiman/autostager.svg)](https://registry.hub.docker.com/u/jumanjiman/autostager 'Docker Hub')&nbsp;
+  [![Download size](https://images.microbadger.com/badges/image/jumanjiman/autostager.svg)](http://microbadger.com/images/jumanjiman/autostager "View on microbadger.com")&nbsp;
+  [![Docker Registry](https://img.shields.io/docker/pulls/jumanjiman/autostager.svg)](https://registry.hub.docker.com/u/jumanjiman/autostager/ 'Docker Hub')&nbsp;
 
 * https://hub.docker.com/r/jumanjiman/puppetmaster/<br/>
-  [![](https://imagelayers.io/badge/jumanjiman/puppetmaster:latest.svg)](https://imagelayers.io/?images=jumanjiman/puppetmaster:latest 'View on imagelayers.io')&nbsp;
-  [![Docker Registry](https://img.shields.io/docker/pulls/jumanjiman/puppetmaster.svg)](https://registry.hub.docker.com/u/jumanjiman/puppetmaster 'Docker Hub')&nbsp;
+  [![Download size](https://images.microbadger.com/badges/image/jumanjiman/puppetmaster.svg)](http://microbadger.com/images/jumanjiman/puppetmaster "View on microbadger.com")&nbsp;
+  [![Docker Registry](https://img.shields.io/docker/pulls/jumanjiman/puppetmaster.svg)](https://registry.hub.docker.com/u/jumanjiman/puppetmaster/ 'Docker Hub')&nbsp;
 
 * https://hub.docker.com/r/jumanjiman/puppetdb/<br/>
-  [![](https://imagelayers.io/badge/jumanjiman/puppetdb:latest.svg)](https://imagelayers.io/?images=jumanjiman/puppetdb:latest 'View on imagelayers.io')&nbsp;
-  [![Docker Registry](https://img.shields.io/docker/pulls/jumanjiman/puppetdb.svg)](https://registry.hub.docker.com/u/jumanjiman/puppetdb 'Docker Hub')&nbsp;
+  [![Download size](https://images.microbadger.com/badges/image/jumanjiman/puppetdb.svg)](http://microbadger.com/images/jumanjiman/puppetdb "View on microbadger.com")&nbsp;
+  [![Docker Registry](https://img.shields.io/docker/pulls/jumanjiman/puppetdb.svg)](https://registry.hub.docker.com/u/jumanjiman/puppetdb/ 'Docker Hub')&nbsp;
 
 * https://hub.docker.com/r/jumanjiman/puppetboard/<br/>
-  [![](https://imagelayers.io/badge/jumanjiman/puppetboard:latest.svg)](https://imagelayers.io/?images=jumanjiman/puppetboard:latest 'View on imagelayers.io')&nbsp;
-  [![Docker Registry](https://img.shields.io/docker/pulls/jumanjiman/puppetboard.svg)](https://registry.hub.docker.com/u/jumanjiman/puppetboard 'Docker Hub')&nbsp;
+  [![Download size](https://images.microbadger.com/badges/image/jumanjiman/puppetboard.svg)](http://microbadger.com/images/jumanjiman/puppetboard "View on microbadger.com")&nbsp;
+  [![Docker Registry](https://img.shields.io/docker/pulls/jumanjiman/puppetboard.svg)](https://registry.hub.docker.com/u/jumanjiman/puppetboard/ 'Docker Hub')&nbsp;
 
 Docker tags:
 
