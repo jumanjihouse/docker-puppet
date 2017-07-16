@@ -11,19 +11,19 @@ Docker hub:
 
 * https://hub.docker.com/r/jumanjiman/autostager/<br/>
   [![](https://imagelayers.io/badge/jumanjiman/autostager:latest.svg)](https://imagelayers.io/?images=jumanjiman/autostager:latest 'View on imagelayers.io')&nbsp;
-  [![Docker Registry](https://img.shields.io/docker/pulls/jumanjiman/autostager.svg)](https://registry.hub.docker.com/u/jumanjiman/autostager 'Docker Hub')&nbsp;
+  [![Docker Registry](https://img.shields.io/docker/pulls/jumanjiman/autostager.svg)](https://registry.hub.docker.com/u/jumanjiman/autostager/ 'Docker Hub')&nbsp;
 
 * https://hub.docker.com/r/jumanjiman/puppetmaster/<br/>
   [![](https://imagelayers.io/badge/jumanjiman/puppetmaster:latest.svg)](https://imagelayers.io/?images=jumanjiman/puppetmaster:latest 'View on imagelayers.io')&nbsp;
-  [![Docker Registry](https://img.shields.io/docker/pulls/jumanjiman/puppetmaster.svg)](https://registry.hub.docker.com/u/jumanjiman/puppetmaster 'Docker Hub')&nbsp;
+  [![Docker Registry](https://img.shields.io/docker/pulls/jumanjiman/puppetmaster.svg)](https://registry.hub.docker.com/u/jumanjiman/puppetmaster/ 'Docker Hub')&nbsp;
 
 * https://hub.docker.com/r/jumanjiman/puppetdb/<br/>
   [![](https://imagelayers.io/badge/jumanjiman/puppetdb:latest.svg)](https://imagelayers.io/?images=jumanjiman/puppetdb:latest 'View on imagelayers.io')&nbsp;
-  [![Docker Registry](https://img.shields.io/docker/pulls/jumanjiman/puppetdb.svg)](https://registry.hub.docker.com/u/jumanjiman/puppetdb 'Docker Hub')&nbsp;
+  [![Docker Registry](https://img.shields.io/docker/pulls/jumanjiman/puppetdb.svg)](https://registry.hub.docker.com/u/jumanjiman/puppetdb/ 'Docker Hub')&nbsp;
 
 * https://hub.docker.com/r/jumanjiman/puppetboard/<br/>
   [![](https://imagelayers.io/badge/jumanjiman/puppetboard:latest.svg)](https://imagelayers.io/?images=jumanjiman/puppetboard:latest 'View on imagelayers.io')&nbsp;
-  [![Docker Registry](https://img.shields.io/docker/pulls/jumanjiman/puppetboard.svg)](https://registry.hub.docker.com/u/jumanjiman/puppetboard 'Docker Hub')&nbsp;
+  [![Docker Registry](https://img.shields.io/docker/pulls/jumanjiman/puppetboard.svg)](https://registry.hub.docker.com/u/jumanjiman/puppetboard/ 'Docker Hub')&nbsp;
 
 Docker tags:
 
