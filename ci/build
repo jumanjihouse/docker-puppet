@@ -11,8 +11,6 @@ export TAG=\${BUILD_DATE}-git-\${VCS_REF}
 EOF
 . ci/vars
 
-source script/functions
-
 rm -f /tmp/start
 date > /tmp/start
 

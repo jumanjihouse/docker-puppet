@@ -1,0 +1,80 @@
+---
+
+fail_fast: false
+
+repos:
+
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.11.0
+    hooks:
+      - id: yamllint
+        args: ['--format', 'parsable', '--strict']
+        exclude: >
+          (?x)^(
+            spec/fixtures/production/hiera.yaml|
+            docker-compose.yaml|
+            puppetmaster/etc/puppet/routes.yaml|
+            .circleci/config.yml
+          )
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v1.2.3
+    hooks:
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-executables-have-shebangs
+        exclude: >
+          (?x)^(
+            puppetboard/files/etc/nginx/puppetboard.ini|
+            puppetboard/files/etc/nginx/nginx.conf|
+            puppetboard/files/var/www/puppetboard/wsgi.py
+          )$
+      - id: check-symlinks
+      - id: check-vcs-permalinks
+      - id: detect-private-key
+        exclude: >
+          (?x)^(
+            ssl/ca/ca_key.pem|
+            ssl/private_keys/puppet.inf.ise.com.pem|
+            ssl/private_keys/puppetboard.inf.ise.com.pem|
+            ssl/private_keys/puppetdb.inf.ise.com.pem
+          )$
+
+  - repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.1.4
+    hooks:
+      - id: forbid-crlf
+      - id: forbid-tabs
+
+  - repo: https://github.com/jumanjihouse/pre-commit-hooks
+    rev: 1.5.1
+    hooks:
+      - id: forbid-binary
+      - id: git-check  # Configure in .gitattributes
+      - id: git-dirty  # Configure in .gitignore
+      - id: shellcheck
+        exclude: ^.*$
+      - id: shfmt
+        exclude: >
+          (?x)^(
+            ci/build|
+            ci/test|
+            puppetmaster/etc/s6/nginx/run|
+            puppetmaster/etc/s6/unicorn/run|
+            script/bootstrap|
+            script/deploy-db|
+            script/deploy-master|
+            script/deploy-named
+          )$
+
+  - repo: https://github.com/jorisroovers/gitlint
+    rev: master
+    hooks:
+      - id: gitlint
+        stages: [commit-msg]
+
+      - id: gitlint
+        entry: gitlint --commits upstream/master..
+        exclude: .*
+        always_run: true
+        stages: [manual]
