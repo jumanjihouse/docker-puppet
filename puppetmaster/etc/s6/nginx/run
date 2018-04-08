@@ -1,5 +1,5 @@
 #!/bin/sh
 
 # Restrict which vars we substitute because nginx.conf has $ in multiple places.
-envsubst '${NGINX_WORKER_PROCESSES}' < /etc/puppet/nginx.conf.template > /etc/puppet/nginx.conf
+envsubst '${NGINX_WORKER_PROCESSES}' </etc/puppet/nginx.conf.template >/etc/puppet/nginx.conf
 exec nginx -g "daemon off;" -c /etc/puppet/nginx.conf

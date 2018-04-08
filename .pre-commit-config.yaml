@@ -48,17 +48,6 @@ repos:
       - id: shellcheck
         exclude: ^.*$
       - id: shfmt
-        exclude: >
-          (?x)^(
-            ci/build|
-            ci/test|
-            puppetmaster/etc/s6/nginx/run|
-            puppetmaster/etc/s6/unicorn/run|
-            script/bootstrap|
-            script/deploy-db|
-            script/deploy-master|
-            script/deploy-named
-          )$
 
   - repo: https://github.com/jorisroovers/gitlint
     rev: master

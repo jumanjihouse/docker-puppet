@@ -29,9 +29,15 @@ docker-compose up -d puppetboard
 
 say Sleep 2 minutes for puppetdb to become ready.
 #
-for x in $(seq 1 60); do echo -n "."; sleep 1; done
+for x in $(seq 1 60); do
+  echo -n "."
+  sleep 1
+done
 echo
-for x in $(seq 1 60); do echo -n "."; sleep 1; done
+for x in $(seq 1 60); do
+  echo -n "."
+  sleep 1
+done
 echo
 
 say Show puppetdb logs

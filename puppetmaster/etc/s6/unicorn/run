@@ -1,4 +1,4 @@
 #!/bin/sh
 
-envsubst < /etc/puppet/unicorn.conf.template > /etc/puppet/unicorn.conf
+envsubst </etc/puppet/unicorn.conf.template >/etc/puppet/unicorn.conf
 exec /usr/lib/ruby/gems/2.1.0/bin/unicorn -c /etc/puppet/unicorn.conf

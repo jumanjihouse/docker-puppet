@@ -8,7 +8,7 @@ proxy_host=proxy.inf.ise.com
 proxy_port=3128
 docker_unit=/etc/systemd/system/docker.service
 
-if onsite && ! grep $proxy_host $docker_unit &> /dev/null; then
+if onsite && ! grep $proxy_host $docker_unit &>/dev/null; then
   [[ -r $docker_unit ]] || smitty sudo cp /usr/lib/systemd/system/docker.service /etc/systemd/system/
 
   say Add proxy to $docker_unit.
