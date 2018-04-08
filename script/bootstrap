@@ -12,7 +12,7 @@ if onsite && ! grep $proxy_host $docker_unit &>/dev/null; then
   [[ -r $docker_unit ]] || smitty sudo cp /usr/lib/systemd/system/docker.service /etc/systemd/system/
 
   say Add proxy to $docker_unit.
-  sudo sed -i "/^Environment=/ s/$/ \"HTTP_PROXY=http:\/\/$proxy_host:$proxy_port\"/" $docker_unit
+  sudo sed -i "/^Environment=/ s/$/ \"HTTP_PROXY=http:\\/\\/$proxy_host:$proxy_port\"/" $docker_unit
   smitty sudo systemctl daemon-reload
   smitty sudo systemctl restart docker.service
   sudo systemctl is-active -q docker.service

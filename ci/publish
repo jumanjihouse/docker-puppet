@@ -18,11 +18,11 @@ jumanjiman/puppetmaster
 "
 
 smitty() {
-  echo "[INFO] $@"
-  eval $@
+  echo "[INFO] $*"
+  eval "$@"
 }
 
-docker login -u $ROBOT_USER -p $ROBOT_PASS
+docker login -u "${ROBOT_USER}" -p "${ROBOT_PASS}"
 
 for build_name in $build_names; do
   echo "===== ${build_name} ====="
@@ -30,16 +30,16 @@ for build_name in $build_names; do
     tagged_name="${build_name}:${tag}"
 
     # Ensure the image-to-be-tagged exists.
-    docker images | grep ${build_name}
+    docker images | grep "${build_name}"
 
     # Create a new tag.
-    smitty docker tag ${build_name} ${tagged_name}
+    smitty docker tag "${build_name}" "${tagged_name}"
 
     # Ensure the tagged image exists.
-    docker images | grep ${build_name} | grep ${tag}
+    docker images | grep "${build_name}" | grep "${tag}"
 
     # Publish the tagged image.
-    smitty docker push ${tagged_name}
+    smitty docker push "${tagged_name}"
 
     echo
     echo

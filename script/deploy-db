@@ -1,6 +1,11 @@
 #!/bin/bash
 
-source script/functions
+. script/functions
+mgmt_ip="${mgmt_ip:-unset}"
+if [[ "${mgmt_ip}" == unset ]]; then
+  echo "Need a value for mgmt_ip" >&2
+  exit 1
+fi
 
 # Do setup.
 script/bootstrap
@@ -26,10 +31,10 @@ smitty sudo systemctl start puppetboard.service
 say Sleep 60 seconds for puppetdb to become ready.
 #
 # It can actually take up to 2 minutes for puppetdb to fully start.
-for x in $(seq 1 60); do
+for _ in $(seq 1 60); do
   echo -n "."
   sleep 1
 done
 echo
 
-say Open browser to http://${mgmt_ip}/puppetboard
+say Open browser to "http://${mgmt_ip}/puppetboard"

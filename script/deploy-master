@@ -30,7 +30,7 @@ smitty sudo systemctl start autostager.service
 
 say Sleep 60 seconds for autostager to populate production env.
 #
-for x in $(seq 1 60); do
+for _ in $(seq 1 60); do
   echo -n "."
   sleep 1
 done

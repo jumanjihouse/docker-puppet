@@ -35,6 +35,7 @@ sysdirs="
 "
 
 # Ensure system dirs are owned by root and not writable by anybody else.
+# shellcheck disable=SC2086
 find $sysdirs -xdev -type d \
   -exec chown root:root {} \; \
   -exec chmod 0755 {} \;
@@ -48,9 +49,11 @@ chown -R puppet:puppet /usr/share/nginx
 chmod u-s /usr/bin/chage
 
 # Remove all suid files.
+# shellcheck disable=SC2086
 find $sysdirs -xdev -type f -a -perm +4000 -delete
 
 # Remove other programs that could be dangerous.
+# shellcheck disable=SC2086
 find $sysdirs -xdev \( \
   -name hexdump -o \
   -name chgrp -o \
@@ -70,4 +73,5 @@ rm -fr /lib/rc
 rm -fr /root
 
 # Remove broken symlinks (because we removed the targets above).
+# shellcheck disable=SC2086
 find $sysdirs -xdev -type l -exec test ! -e {} \; -delete
