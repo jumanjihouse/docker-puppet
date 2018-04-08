@@ -1,13 +1,18 @@
 #!/bin/bash
 set -e
 
-source script/functions
+. script/functions
+mgmt_ip="${mgmt_ip:-unset}"
+if [[ "${mgmt_ip}" == unset ]]; then
+  echo "Need a value for mgmt_ip" >&2
+  exit 1
+fi
 
 say Run puppet agent.
 #
 smitty docker run \
   --rm \
-  --dns=${mgmt_ip} \
+  --dns="${mgmt_ip}" \
   --hostname=blah.example.com \
   jumanjiman/puppetagent \
   puppet agent -t --server=puppet.inf.ise.com
@@ -16,7 +21,7 @@ say Check for host in puppetboard.
 #
 smitty docker run \
   --rm \
-  --dns=${mgmt_ip} \
+  --dns="${mgmt_ip}" \
   --hostname=blah.example.com \
   jumanjiman/puppetagent \
   elinks -dump http://puppetboard.inf.ise.com/puppetboard/

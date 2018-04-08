@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
-set -e
-set -u
+set -eEu
 
-source script/functions
+. script/functions
+. ci/bootstrap
+
+run_precommit
 
 ci/clean
 
@@ -27,9 +29,15 @@ docker-compose up -d puppetboard
 
 say Sleep 2 minutes for puppetdb to become ready.
 #
-for x in $(seq 1 60); do echo -n "."; sleep 1; done
+for _ in $(seq 1 60); do
+  echo -n "."
+  sleep 1
+done
 echo
-for x in $(seq 1 60); do echo -n "."; sleep 1; done
+for _ in $(seq 1 60); do
+  echo -n "."
+  sleep 1
+done
 echo
 
 say Show puppetdb logs
@@ -43,7 +51,7 @@ say Run puppet agent against master.
 hostname=foo.example.com
 out=/tmp/docker.out
 rm -fr $out
-docker-compose run puppetagent | tee -a ${out}
+docker-compose run puppetagent | tee -a ${out} || :
 
 say Look for specific messages
 grep 'foo is bar' $out

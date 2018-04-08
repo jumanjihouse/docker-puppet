@@ -1,3 +1,4 @@
+---
 # We list yaml first to prefer yaml over etcd.
 :backends:
   - yaml

@@ -29,8 +29,8 @@ s6_dirs="
 /etc/s6/unicorn/supervise
 "
 for dir in ${s6_dirs}; do
-  mkdir -p ${dir}
-  chown puppet:puppet ${dir}
+  mkdir -p "${dir}"
+  chown puppet:puppet "${dir}"
 done
 
 # Ensure correct permissions for puppet dirs.

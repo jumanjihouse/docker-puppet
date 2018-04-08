@@ -13,6 +13,7 @@ dirs="
 "
 for dir in $dirs; do
   # If any file has group or world write privilege, remove that privilege.
+  # shellcheck disable=SC2086
   find $dir -type f -perm /go=w -exec chmod go-w {} +
 done
 

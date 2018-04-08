@@ -1,7 +1,12 @@
 #!/bin/bash
 set -e
 
-source script/functions
+. script/functions
+mgmt_ip="${mgmt_ip:-unset}"
+if [[ "${mgmt_ip}" == unset ]]; then
+  echo "Need a value for mgmt_ip" >&2
+  exit 1
+fi
 
 say Ensure we have name resolution.
 #
@@ -21,9 +26,9 @@ say Create puppet ca inside data container.
 #
 smitty docker run \
   --rm \
-  --dns=${mgmt_ip} \
+  --dns="${mgmt_ip}" \
   --hostname=puppetmaster.inf.ise.com \
-  -v $(pwd)/spec/fixtures:/opt/puppet/environments \
+  -v "$(pwd)/spec/fixtures":/opt/puppet/environments \
   --volumes-from=castage-data \
   jumanjiman/puppetmaster \
   puppet cert --generate puppet.inf.ise.com
@@ -31,10 +36,10 @@ smitty docker run \
 say Start the puppet master.
 #
 smitty docker run -d \
-  --dns=${mgmt_ip} \
+  --dns="${mgmt_ip}" \
   --name=master \
   --hostname=puppetmaster.inf.ise.com \
-  -v $(pwd)/spec/fixtures:/opt/puppet/environments \
+  -v "$(pwd)/spec/fixtures":/opt/puppet/environments \
   --volumes-from=castage-data \
   -p 8140:8140 \
   jumanjiman/puppetmaster
@@ -43,7 +48,7 @@ say Get a puppetdb agent cert and set up /etc/puppetdb/ssl.
 #
 smitty docker run \
   --rm \
-  --dns=${mgmt_ip} \
+  --dns="${mgmt_ip}" \
   --hostname=puppetdb.inf.ise.com \
   --volumes-from=castage-data \
   jumanjiman/puppetdb \
@@ -57,7 +62,7 @@ say Get a puppetboard agent cert.
 #
 smitty docker run \
   --rm \
-  --dns=${mgmt_ip} \
+  --dns="${mgmt_ip}" \
   --hostname=puppetboard.inf.ise.com \
   --volumes-from=castage-data \
   jumanjiman/puppetboard \
@@ -72,5 +77,5 @@ say Copy ssl dir from data container into repo.
 #
 smitty rm -fr ssl
 #docker run --rm --volumes-from castage-data -v $(pwd):/ssl busybox tar -C /var/lib/puppet -cvf /backup/castage-data.tar ssl
-smitty docker run --rm --volumes-from castage-data -v $(pwd)/ssl:/ssl busybox cp -r /var/lib/puppet/ssl /
+smitty docker run --rm --volumes-from castage-data -v "$(pwd)/ssl":/ssl busybox cp -r /var/lib/puppet/ssl /
 smitty sudo chown -R core ssl

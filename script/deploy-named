@@ -2,18 +2,23 @@
 set -e
 set -o noclobber
 
-source script/functions
+. script/functions
+mgmt_ip="${mgmt_ip:-unset}"
+if [[ "${mgmt_ip}" == unset ]]; then
+  echo "Need a value for mgmt_ip" >&2
+  exit 1
+fi
 
 # Note: Bind the DNS port to the management IP to avoid client error:
 # ;; reply from unexpected source: yyy.yyy.yyy.yyy#53, expected xxx.xxx.xxx.xxx#53
 #
-if ! grep $mgmt_ip /etc/named-test.env &> /dev/null; then
+if ! grep "$mgmt_ip" /etc/named-test.env &>/dev/null; then
   sudo rm -f /etc/named-test.env
   echo "mgmt_ip=${mgmt_ip}" | sudo tee /etc/named-test.env
 fi
 
 if sudo systemctl is-active -q named-test.service; then
-  netstat -uln | grep ${mgmt_ip}:53 &> /dev/null || smitty sudo systemctl restart named-test.service
+  netstat -uln | grep "${mgmt_ip}:53" &>/dev/null || smitty sudo systemctl restart named-test.service
 else
   smitty sudo cp systemd/test/named-test.service /etc/systemd/system/
   smitty sudo systemctl daemon-reload
@@ -25,6 +30,6 @@ fi
 sudo systemctl is-active -q named-test.service
 
 # Fail if 53 is bound to wrong ip.
-netstat -uln | grep ${mgmt_ip}:53 &> /dev/null
+netstat -uln | grep "${mgmt_ip}:53" &>/dev/null
 
 say OK
