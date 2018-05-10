@@ -4,7 +4,7 @@ FROM alpine:3.7
 # http://jumanjiman.github.io/
 MAINTAINER Paul Morgan <jumanjiman@gmail.com>
 
-ENV VERSION 0.0.14
+ENV VERSION 0.0.15
 
 RUN apk add --no-cache ruby ca-certificates git perl && \
     apk add --no-cache -t DEV alpine-sdk ruby-dev && \
